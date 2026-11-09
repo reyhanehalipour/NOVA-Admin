@@ -4,25 +4,13 @@ import { ProtectedRoute } from './ProtectedRoute'
 import { AdminLayout } from '../Shared/layout'
 import { lightTheme } from '../Shared/theme'
 import { LoginPage } from '../Pages/Login/Login'
+import { ProductsList } from '../Pages/Products/ProductsList'
+import { CreateProductPage } from '../Pages/Products/CreateProduct/CreateProduct'
 
 const DashboardPlaceholder = () => (
   <div>
     <h2>Dashboard</h2>
     <p>داشبورد (موقت)</p>
-  </div>
-)
-
-const ProductsPlaceholder = () => (
-  <div>
-    <h2>Products</h2>
-    <p>مدیریت محصولات (موقت)</p>
-  </div>
-)
-
-const CreateProductPlaceholder = () => (
-  <div>
-    <h2>Create Product</h2>
-    <p>ایجاد محصول جدید (موقت)</p>
   </div>
 )
 
@@ -53,8 +41,8 @@ export const MainRoutes = () => (
     <Route element={<ProtectedRoute />}>
       <Route element={<AdminLayout theme={lightTheme} />}>
         <Route path={ROUTES.DASHBOARD} element={<DashboardPlaceholder />} />
-        <Route path={ROUTES.PRODUCTS} element={<ProductsPlaceholder />} />
-        <Route path={ROUTES.CREATE_PRODUCT} element={<CreateProductPlaceholder />} />
+        <Route path={ROUTES.PRODUCTS} element={<ProductsList theme={lightTheme} />} />
+        <Route path={ROUTES.CREATE_PRODUCT} element={<CreateProductPage theme={lightTheme} />} />
         <Route path={ROUTES.USERS} element={<UsersPlaceholder />} />
         <Route path={ROUTES.CREATE_USER} element={<CreateUserPlaceholder />} />
       </Route>
