@@ -11,4 +11,11 @@ export const faDictionary = {
   cancel: 'انصراف',
   submit: 'ثبت',
   dashboard: 'داشبورد',
+  loginTitle: 'ورود به سیستم',
+  loginSubtitle: 'لطفاً اطلاعات ورود خود را وارد کنید',
+  usernameLabel: 'نام کاربری',
+  passwordLabel: 'رمز عبور',
+  loginButton: 'ورود',
+  loginError: 'نام کاربری یا رمز عبور اشتباه است',
+  requiredField: 'این فیلد الزامی است',
 }

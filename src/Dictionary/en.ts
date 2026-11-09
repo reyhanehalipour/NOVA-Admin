@@ -13,4 +13,11 @@ export const enDictionary: Dictionary = {
   cancel: 'Cancel',
   submit: 'Submit',
   dashboard: 'Dashboard',
+  loginTitle: 'Login',
+  loginSubtitle: 'Please enter your login credentials',
+  usernameLabel: 'Username',
+  passwordLabel: 'Password',
+  loginButton: 'Login',
+  loginError: 'Invalid username or password',
+  requiredField: 'This field is required',
 }

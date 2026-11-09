@@ -3,13 +3,7 @@ import { ROUTES } from './appRoutes'
 import { ProtectedRoute } from './ProtectedRoute'
 import { AdminLayout } from '../Shared/layout'
 import { lightTheme } from '../Shared/theme'
-
-const LoginPlaceholder = () => (
-  <div>
-    <h2>Login</h2>
-    <p>صفحه ورود به سیستم (موقت)</p>
-  </div>
-)
+import { LoginPage } from '../Pages/Login/Login'
 
 const DashboardPlaceholder = () => (
   <div>
@@ -55,7 +49,7 @@ const NotFoundPlaceholder = () => (
 
 export const MainRoutes = () => (
   <Routes>
-    <Route path={ROUTES.LOGIN} element={<LoginPlaceholder />} />
+    <Route path={ROUTES.LOGIN} element={<LoginPage />} />
     <Route element={<ProtectedRoute />}>
       <Route element={<AdminLayout theme={lightTheme} />}>
         <Route path={ROUTES.DASHBOARD} element={<DashboardPlaceholder />} />
