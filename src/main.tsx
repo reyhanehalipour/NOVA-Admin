@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { store } from './Redux'
 import App from './App'
 import { ThemeProvider, GlobalStyle } from './Shared/theme'
+import { LanguageProvider } from './Dictionary/LanguageProvider'
 
 const root = createRoot(document.getElementById('root')!)
 root.render(
@@ -12,7 +13,9 @@ root.render(
     <Provider store={store}>
       <ThemeProvider>
         <GlobalStyle />
-        <App />
+        <LanguageProvider>
+          <App />
+        </LanguageProvider>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>
