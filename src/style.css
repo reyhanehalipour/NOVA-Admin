@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+#app {
+  text-align: center;
+  padding: 2rem;
+}
+
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+}
