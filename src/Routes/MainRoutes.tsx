@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ROUTES } from './appRoutes'
 import { ProtectedRoute } from './ProtectedRoute'
+import { AdminLayout } from '../Shared/layout'
+import { lightTheme } from '../Shared/theme'
 
 const LoginPlaceholder = () => (
   <div>
@@ -55,11 +57,13 @@ export const MainRoutes = () => (
   <Routes>
     <Route path={ROUTES.LOGIN} element={<LoginPlaceholder />} />
     <Route element={<ProtectedRoute />}>
-      <Route path={ROUTES.DASHBOARD} element={<DashboardPlaceholder />} />
-      <Route path={ROUTES.PRODUCTS} element={<ProductsPlaceholder />} />
-      <Route path={ROUTES.CREATE_PRODUCT} element={<CreateProductPlaceholder />} />
-      <Route path={ROUTES.USERS} element={<UsersPlaceholder />} />
-      <Route path={ROUTES.CREATE_USER} element={<CreateUserPlaceholder />} />
+      <Route element={<AdminLayout theme={lightTheme} />}>
+        <Route path={ROUTES.DASHBOARD} element={<DashboardPlaceholder />} />
+        <Route path={ROUTES.PRODUCTS} element={<ProductsPlaceholder />} />
+        <Route path={ROUTES.CREATE_PRODUCT} element={<CreateProductPlaceholder />} />
+        <Route path={ROUTES.USERS} element={<UsersPlaceholder />} />
+        <Route path={ROUTES.CREATE_USER} element={<CreateUserPlaceholder />} />
+      </Route>
     </Route>
     <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
     <Route path="*" element={<NotFoundPlaceholder />} />
