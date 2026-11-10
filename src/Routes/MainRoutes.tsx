@@ -7,13 +7,7 @@ import { ProductsList } from '../Pages/Products/ProductsList'
 import { CreateProductPage } from '../Pages/Products/CreateProduct/CreateProduct'
 import { UsersList } from '../Pages/Users/UsersList'
 import { CreateUserPage } from '../Pages/Users/CreateUser/CreateUser'
-
-const DashboardPlaceholder = () => (
-  <div>
-    <h2>Dashboard</h2>
-    <p>داشبورد (موقت)</p>
-  </div>
-)
+import { DashboardPage } from '../Pages/Dashboard/Dashboard'
 
 const NotFoundPlaceholder = () => (
   <div>
@@ -27,7 +21,7 @@ export const MainRoutes = () => (
     <Route path={ROUTES.LOGIN} element={<LoginPage />} />
     <Route element={<ProtectedRoute />}>
       <Route element={<AdminLayout />}>
-        <Route path={ROUTES.DASHBOARD} element={<DashboardPlaceholder />} />
+        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
         <Route path={ROUTES.PRODUCTS} element={<ProductsList />} />
         <Route path={ROUTES.CREATE_PRODUCT} element={<CreateProductPage />} />
         <Route path={ROUTES.USERS} element={<UsersList />} />

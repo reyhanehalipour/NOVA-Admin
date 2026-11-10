@@ -75,4 +75,9 @@ export const enDictionary: Dictionary = {
   languageEnglish: 'English',
   language: 'Language',
   theme: 'Theme',
+  dashboardSubtitle: 'Overview of store status',
+  totalProducts: 'Total Products',
+  totalUsers: 'Total Users',
+  viewProducts: 'View Products',
+  viewUsers: 'View Users',
 }

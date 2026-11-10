@@ -73,4 +73,9 @@ export const faDictionary = {
   languageEnglish: 'انگلیسی',
   language: 'زبان',
   theme: 'تم',
+  dashboardSubtitle: 'نمای کلی از وضعیت فروشگاه',
+  totalProducts: 'کل محصولات',
+  totalUsers: 'کل کاربران',
+  viewProducts: 'مشاهده محصولات',
+  viewUsers: 'مشاهده کاربران',
 }
