@@ -6,25 +6,13 @@ import { lightTheme } from '../Shared/theme'
 import { LoginPage } from '../Pages/Login/Login'
 import { ProductsList } from '../Pages/Products/ProductsList'
 import { CreateProductPage } from '../Pages/Products/CreateProduct/CreateProduct'
+import { UsersList } from '../Pages/Users/UsersList'
+import { CreateUserPage } from '../Pages/Users/CreateUser/CreateUser'
 
 const DashboardPlaceholder = () => (
   <div>
     <h2>Dashboard</h2>
     <p>داشبورد (موقت)</p>
-  </div>
-)
-
-const UsersPlaceholder = () => (
-  <div>
-    <h2>Users</h2>
-    <p>مدیریت کاربران (موقت)</p>
-  </div>
-)
-
-const CreateUserPlaceholder = () => (
-  <div>
-    <h2>Create User</h2>
-    <p>ایجاد کاربر جدید (موقت)</p>
   </div>
 )
 
@@ -43,8 +31,8 @@ export const MainRoutes = () => (
         <Route path={ROUTES.DASHBOARD} element={<DashboardPlaceholder />} />
         <Route path={ROUTES.PRODUCTS} element={<ProductsList theme={lightTheme} />} />
         <Route path={ROUTES.CREATE_PRODUCT} element={<CreateProductPage theme={lightTheme} />} />
-        <Route path={ROUTES.USERS} element={<UsersPlaceholder />} />
-        <Route path={ROUTES.CREATE_USER} element={<CreateUserPlaceholder />} />
+        <Route path={ROUTES.USERS} element={<UsersList theme={lightTheme} />} />
+        <Route path={ROUTES.CREATE_USER} element={<CreateUserPage theme={lightTheme} />} />
       </Route>
     </Route>
     <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
