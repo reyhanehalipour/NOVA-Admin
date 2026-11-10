@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
+import { useTheme } from '../theme/ThemeProvider'
 import type { Theme } from '../theme/theme.types'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
@@ -20,11 +21,9 @@ const MainWrapper = styled.main<{ $theme: Theme }>`
   min-height: calc(100vh - 72px);
 `
 
-interface AdminLayoutProps {
-  theme: Theme
-}
+export const AdminLayout: React.FC = () => {
+  const { theme } = useTheme()
 
-export const AdminLayout: React.FC<AdminLayoutProps> = ({ theme }) => {
   return (
     <LayoutContainer $theme={theme}>
       <Header theme={theme} />

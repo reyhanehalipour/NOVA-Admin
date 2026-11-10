@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom'
+import { useLanguage } from '../../Dictionary/LanguageContext'
 import styled from 'styled-components'
 import type { Theme } from '../theme/theme.types'
+import { ROUTES } from '../../Routes/appRoutes'
 
 const SidebarContainer = styled.aside<{ $theme: Theme }>`
   position: fixed;
@@ -62,21 +64,30 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ theme }) => {
+  const { dictionary } = useLanguage()
+
+  const menuItems = [
+    { path: ROUTES.DASHBOARD, key: 'dashboard' as const },
+    { path: ROUTES.PRODUCTS, key: 'productsTitle' as const },
+    { path: ROUTES.USERS, key: 'usersTitle' as const },
+  ]
+
   return (
     <SidebarContainer $theme={theme}>
       <LogoBox $theme={theme}>
         <LogoText $theme={theme}>NOVA</LogoText>
       </LogoBox>
       <Menu $theme={theme}>
-        <MenuItem to="/dashboard" $theme={theme}>
-          داشبورد
-        </MenuItem>
-        <MenuItem to="/products" $theme={theme}>
-          محصولات
-        </MenuItem>
-        <MenuItem to="/users" $theme={theme}>
-          کاربران
-        </MenuItem>
+        {menuItems.map((item) => (
+          <MenuItem
+            key={item.path}
+            to={item.path}
+            $theme={theme}
+            end
+          >
+            {dictionary[item.key]}
+          </MenuItem>
+        ))}
       </Menu>
     </SidebarContainer>
   )

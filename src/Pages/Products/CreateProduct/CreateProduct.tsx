@@ -4,14 +4,19 @@ import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks'
 import { createProductThunk } from '../../../Redux/products/productsSlice'
-import type { CreateProductInput } from '../../../types/product.types'
 import styled from 'styled-components'
 import type { Theme } from '../../../Shared/theme/theme.types'
+import { useTheme } from '../../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../../Dictionary/LanguageContext'
 import { ROUTES } from '../../../Routes/appRoutes'
-import type { RootState } from '../../../Redux/store'
 
-interface CreateProductFormValues extends CreateProductInput {}
+interface CreateProductFormValues {
+  title: string
+  description: string
+  price: number
+  category: string
+  image: string
+}
 
 const CreateProductContainer = styled.div<{ $theme: Theme }>`
   max-width: 600px;
@@ -152,11 +157,12 @@ const BackButton = styled.button<{ $theme: Theme }>`
   }
 `
 
-export const CreateProductPage: React.FC<{ theme: Theme }> = ({ theme }) => {
+export const CreateProductPage: React.FC = () => {
   const dispatch = useAppDispatch()
   const { dictionary } = useLanguage()
   const navigate = useNavigate()
-  const { createStatus, error } = useAppSelector((state: RootState) => state.products)
+  const { theme } = useTheme()
+  const { createStatus, error } = useAppSelector((state) => state.products)
 
   const [submitError, setSubmitError] = useState<string | null>(null)
 

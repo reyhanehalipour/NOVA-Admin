@@ -7,6 +7,7 @@ import { createUserThunk } from '../../../Redux/users/usersSlice'
 import type { CreateUserInput } from '../../../types/user.types'
 import styled from 'styled-components'
 import type { Theme } from '../../../Shared/theme/theme.types'
+import { useTheme } from '../../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../../Dictionary/LanguageContext'
 import { ROUTES } from '../../../Routes/appRoutes'
 import type { RootState } from '../../../Redux/store'
@@ -143,10 +144,11 @@ const BackButton = styled.button<{ $theme: Theme }>`
   }
 `
 
-export const CreateUserPage: React.FC<{ theme: Theme }> = ({ theme }) => {
+export const CreateUserPage: React.FC = () => {
   const dispatch = useAppDispatch()
   const { dictionary } = useLanguage()
   const navigate = useNavigate()
+  const { theme } = useTheme()
   const { createStatus, error } = useAppSelector((state: RootState) => state.users)
 
   const [submitError, setSubmitError] = useState<string | null>(null)

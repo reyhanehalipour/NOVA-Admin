@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { ROUTES } from './appRoutes'
 import { ProtectedRoute } from './ProtectedRoute'
 import { AdminLayout } from '../Shared/layout'
-import { lightTheme } from '../Shared/theme'
 import { LoginPage } from '../Pages/Login/Login'
 import { ProductsList } from '../Pages/Products/ProductsList'
 import { CreateProductPage } from '../Pages/Products/CreateProduct/CreateProduct'
@@ -27,12 +26,12 @@ export const MainRoutes = () => (
   <Routes>
     <Route path={ROUTES.LOGIN} element={<LoginPage />} />
     <Route element={<ProtectedRoute />}>
-      <Route element={<AdminLayout theme={lightTheme} />}>
+      <Route element={<AdminLayout />}>
         <Route path={ROUTES.DASHBOARD} element={<DashboardPlaceholder />} />
-        <Route path={ROUTES.PRODUCTS} element={<ProductsList theme={lightTheme} />} />
-        <Route path={ROUTES.CREATE_PRODUCT} element={<CreateProductPage theme={lightTheme} />} />
-        <Route path={ROUTES.USERS} element={<UsersList theme={lightTheme} />} />
-        <Route path={ROUTES.CREATE_USER} element={<CreateUserPage theme={lightTheme} />} />
+        <Route path={ROUTES.PRODUCTS} element={<ProductsList />} />
+        <Route path={ROUTES.CREATE_PRODUCT} element={<CreateProductPage />} />
+        <Route path={ROUTES.USERS} element={<UsersList />} />
+        <Route path={ROUTES.CREATE_USER} element={<CreateUserPage />} />
       </Route>
     </Route>
     <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />

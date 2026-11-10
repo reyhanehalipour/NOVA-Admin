@@ -6,6 +6,7 @@ import type { Product } from '../../types/product.types'
 import { ROUTES } from '../../Routes/appRoutes'
 import styled from 'styled-components'
 import type { Theme } from '../../Shared/theme/theme.types'
+import { useTheme } from '../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../Dictionary/LanguageContext'
 
 const ProductsContainer = styled.div<{ $theme: Theme }>`
@@ -162,14 +163,11 @@ const RetryButton = styled.button<{ $theme: Theme }>`
   }
 `
 
-interface ProductsListProps {
-  theme: Theme
-}
-
-export const ProductsList: React.FC<ProductsListProps> = ({ theme }) => {
+export const ProductsList: React.FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { dictionary } = useLanguage()
+  const { theme } = useTheme()
   const { items, fetchStatus, error } = useAppSelector((state) => state.products)
   const [searchQuery, setSearchQuery] = useState('')
 

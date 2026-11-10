@@ -67,4 +67,10 @@ export const faDictionary = {
   createUserBack: 'بازگشت به لیست کاربران',
   createUserSuccess: 'کاربر با موفقیت ایجاد شد',
   createUserError: 'خطا در ایجاد کاربر',
+  themeLight: 'روشن',
+  themeDark: 'تاریک',
+  languagePersian: 'فارسی',
+  languageEnglish: 'انگلیسی',
+  language: 'زبان',
+  theme: 'تم',
 }

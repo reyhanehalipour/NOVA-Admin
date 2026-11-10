@@ -6,6 +6,7 @@ import type { User } from '../../types/user.types'
 import { ROUTES } from '../../Routes/appRoutes'
 import styled from 'styled-components'
 import type { Theme } from '../../Shared/theme/theme.types'
+import { useTheme } from '../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../Dictionary/LanguageContext'
 
 const UsersContainer = styled.div<{ $theme: Theme }>`
@@ -154,14 +155,11 @@ const RetryButton = styled.button<{ $theme: Theme }>`
   }
 `
 
-interface UsersListProps {
-  theme: Theme
-}
-
-export const UsersList: React.FC<UsersListProps> = ({ theme }) => {
+export const UsersList: React.FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { dictionary } = useLanguage()
+  const { theme } = useTheme()
   const { items, fetchStatus, error } = useAppSelector((state) => state.users)
   const [searchQuery, setSearchQuery] = useState('')
 

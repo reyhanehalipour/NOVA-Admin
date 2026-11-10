@@ -69,4 +69,10 @@ export const enDictionary: Dictionary = {
   createUserBack: 'Back to Users List',
   createUserSuccess: 'User created successfully',
   createUserError: 'Error creating user',
+  themeLight: 'Light',
+  themeDark: 'Dark',
+  languagePersian: 'Persian',
+  languageEnglish: 'English',
+  language: 'Language',
+  theme: 'Theme',
 }
