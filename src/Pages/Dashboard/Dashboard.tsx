@@ -215,7 +215,7 @@ export const DashboardPage: React.FC = () => {
           </StatsGrid>
 
           <QuickActions $theme={theme}>
-            <SectionTitle $theme={theme}>دسترسی سریع</SectionTitle>
+            <SectionTitle $theme={theme}>{dictionary.quickActions}</SectionTitle>
             <ActionGrid $theme={theme}>
               <ActionCard $theme={theme} href={ROUTES.PRODUCTS} onClick={(e) => { e.preventDefault(); navigate(ROUTES.PRODUCTS, { replace: true }) }}>
                 <ActionIcon $theme={theme}>📦</ActionIcon>

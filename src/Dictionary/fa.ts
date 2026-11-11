@@ -78,4 +78,5 @@ export const faDictionary = {
   totalUsers: 'کل کاربران',
   viewProducts: 'مشاهده محصولات',
   viewUsers: 'مشاهده کاربران',
+  quickActions: 'دسترسی سریع',
 }

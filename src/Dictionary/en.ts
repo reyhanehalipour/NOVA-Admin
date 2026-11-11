@@ -80,4 +80,5 @@ export const enDictionary: Dictionary = {
   totalUsers: 'Total Users',
   viewProducts: 'View Products',
   viewUsers: 'View Users',
+  quickActions: 'Quick Actions',
 }
