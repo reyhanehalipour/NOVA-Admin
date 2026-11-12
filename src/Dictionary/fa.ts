@@ -1,7 +1,7 @@
 export const faDictionary = {
   appName: 'Nova Admin',
   login: 'ورود به سیستم',
-  logout: 'خروج از سیستم',
+  logout: 'خروج ',
   username: 'نام کاربری',
   password: 'رمز عبور',
   search: 'جستجو',
@@ -38,6 +38,7 @@ export const faDictionary = {
   createProductPriceLabel: 'قیمت',
   createProductCategoryLabel: 'دسته‌بندی',
   createProductImageLabel: 'آدرس تصویر',
+  createProductImagePlaceholder: 'https://example.com/product-image.jpg',
   createProductSubmit: 'ایجاد محصول',
   createProductBack: 'بازگشت به لیست محصولات',
   createProductSuccess: 'محصول با موفقیت ایجاد شد',

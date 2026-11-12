@@ -29,6 +29,11 @@ export const FormInput = styled.input<{ $theme: Theme }>`
   border: 1px solid ${(props) => props.$theme.colors.border};
   border-radius: ${(props) => props.$theme.borderRadius.md};
 
+  &::placeholder {
+    color: ${(props) => props.$theme.colors.secondary};
+    opacity: 0.75;
+  }
+
   &:focus {
     border-color: ${(props) => props.$theme.colors.primary};
     outline: none;

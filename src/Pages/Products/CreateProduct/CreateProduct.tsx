@@ -203,6 +203,7 @@ export const CreateProductPage: React.FC = () => {
             id="image"
             name="image"
             type="text"
+            placeholder={dictionary.createProductImagePlaceholder}
             value={formik.values.image}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

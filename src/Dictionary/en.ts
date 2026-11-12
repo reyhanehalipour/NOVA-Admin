@@ -40,6 +40,7 @@ export const enDictionary: Dictionary = {
   createProductPriceLabel: 'Price',
   createProductCategoryLabel: 'Category',
   createProductImageLabel: 'Image URL',
+  createProductImagePlaceholder: 'https://example.com/product-image.jpg',
   createProductSubmit: 'Create Product',
   createProductBack: 'Back to Products List',
   createProductSuccess: 'Product created successfully',
