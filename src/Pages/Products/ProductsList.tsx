@@ -8,6 +8,10 @@ import styled from 'styled-components'
 import type { Theme } from '../../Shared/theme/theme.types'
 import { useTheme } from '../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../Dictionary/LanguageContext'
+import { usePagination } from '../../Shared/hooks/usePagination'
+import { Pagination } from '../../Shared/components/Pagination'
+
+const PAGE_SIZE = 5
 
 const ProductsContainer = styled.div<{ $theme: Theme }>`
   max-width: 1200px;
@@ -183,6 +187,20 @@ export const ProductsList: React.FC = () => {
     )
   })
 
+  const {
+    currentPage,
+    totalPages,
+    paginatedData,
+    rangeStart,
+    rangeEnd,
+    totalItems,
+    canPrev,
+    canNext,
+    goToPage,
+    nextPage,
+    prevPage,
+  } = usePagination({ data: filteredProducts, pageSize: PAGE_SIZE, resetKey: searchQuery })
+
   const isLoading = fetchStatus === 'loading'
   const isError = fetchStatus === 'failed'
   const isEmpty = items.length === 0 && !isLoading && !isError
@@ -239,28 +257,43 @@ export const ProductsList: React.FC = () => {
           <StatusTitle $theme={theme}>{dictionary.productsNotFound}</StatusTitle>
         </StatusBox>
       ) : (
-        <Table $theme={theme}>
-          <TableHeader $theme={theme}>
-            <tr>
-              <TableHeaderCell $theme={theme}>{dictionary.productsImage}</TableHeaderCell>
-              <TableHeaderCell $theme={theme}>{dictionary.productsTitleCol}</TableHeaderCell>
-              <TableHeaderCell $theme={theme}>{dictionary.productsPriceCol}</TableHeaderCell>
-              <TableHeaderCell $theme={theme}>{dictionary.productsCategoryCol}</TableHeaderCell>
-            </tr>
-          </TableHeader>
-          <TableBody $theme={theme}>
-            {filteredProducts.map((product: Product) => (
-              <TableRow key={product.id} $theme={theme}>
-                <TableCell $theme={theme}>
-                  <ProductImage src={product.image} alt={product.title} />
-                </TableCell>
-                <TableCell $theme={theme}>{product.title}</TableCell>
-                <TableCell $theme={theme}>{product.price.toLocaleString()}</TableCell>
-                <TableCell $theme={theme}>{product.category}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <>
+          <Table $theme={theme}>
+            <TableHeader $theme={theme}>
+              <tr>
+                <TableHeaderCell $theme={theme}>{dictionary.productsImage}</TableHeaderCell>
+                <TableHeaderCell $theme={theme}>{dictionary.productsTitleCol}</TableHeaderCell>
+                <TableHeaderCell $theme={theme}>{dictionary.productsPriceCol}</TableHeaderCell>
+                <TableHeaderCell $theme={theme}>{dictionary.productsCategoryCol}</TableHeaderCell>
+              </tr>
+            </TableHeader>
+            <TableBody $theme={theme}>
+              {paginatedData.map((product: Product) => (
+                <TableRow key={product.id} $theme={theme}>
+                  <TableCell $theme={theme}>
+                    <ProductImage src={product.image} alt={product.title} />
+                  </TableCell>
+                  <TableCell $theme={theme}>{product.title}</TableCell>
+                  <TableCell $theme={theme}>{product.price.toLocaleString()}</TableCell>
+                  <TableCell $theme={theme}>{product.category}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Pagination
+            theme={theme}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            totalItems={totalItems}
+            canPrev={canPrev}
+            canNext={canNext}
+            onPrev={prevPage}
+            onNext={nextPage}
+            onPageChange={goToPage}
+          />
+        </>
       )}
     </ProductsContainer>
   )

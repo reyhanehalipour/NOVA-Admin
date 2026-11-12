@@ -11,6 +11,7 @@ export const lightTheme: Theme = {
     text: '#0f172a',
     border: '#e2e8f0',
     accent: '#f59e0b',
+    onPrimary: '#FFFFFF',
   },
   spacing: sharedTokens.spacing,
   borderRadius: sharedTokens.borderRadius,

@@ -79,4 +79,8 @@ export const faDictionary = {
   viewProducts: 'مشاهده محصولات',
   viewUsers: 'مشاهده کاربران',
   quickActions: 'دسترسی سریع',
+  paginationShowing: 'نمایش',
+  paginationOf: 'از',
+  paginationPrevious: 'قبلی',
+  paginationNext: 'بعدی',
 }

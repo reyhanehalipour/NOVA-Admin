@@ -81,4 +81,8 @@ export const enDictionary: Dictionary = {
   viewProducts: 'View Products',
   viewUsers: 'View Users',
   quickActions: 'Quick Actions',
+  paginationShowing: 'Showing',
+  paginationOf: 'of',
+  paginationPrevious: 'Previous',
+  paginationNext: 'Next',
 }

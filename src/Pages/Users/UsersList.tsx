@@ -8,6 +8,10 @@ import styled from 'styled-components'
 import type { Theme } from '../../Shared/theme/theme.types'
 import { useTheme } from '../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../Dictionary/LanguageContext'
+import { usePagination } from '../../Shared/hooks/usePagination'
+import { Pagination } from '../../Shared/components/Pagination'
+
+const PAGE_SIZE = 5
 
 const UsersContainer = styled.div<{ $theme: Theme }>`
   max-width: 1200px;
@@ -177,6 +181,20 @@ export const UsersList: React.FC = () => {
     )
   })
 
+  const {
+    currentPage,
+    totalPages,
+    paginatedData,
+    rangeStart,
+    rangeEnd,
+    totalItems,
+    canPrev,
+    canNext,
+    goToPage,
+    nextPage,
+    prevPage,
+  } = usePagination({ data: filteredUsers, pageSize: PAGE_SIZE, resetKey: searchQuery })
+
   const isLoading = fetchStatus === 'loading'
   const isError = fetchStatus === 'failed'
   const isEmpty = items.length === 0 && !isLoading && !isError
@@ -233,26 +251,41 @@ export const UsersList: React.FC = () => {
           <StatusTitle $theme={theme}>{dictionary.usersNotFound}</StatusTitle>
         </StatusBox>
       ) : (
-        <Table $theme={theme}>
-          <TableHeader $theme={theme}>
-            <tr>
-              <TableHeaderCell $theme={theme}>{dictionary.usersNameCol}</TableHeaderCell>
-              <TableHeaderCell $theme={theme}>{dictionary.usersUsernameCol}</TableHeaderCell>
-              <TableHeaderCell $theme={theme}>{dictionary.usersEmailCol}</TableHeaderCell>
-              <TableHeaderCell $theme={theme}>{dictionary.usersPhoneCol}</TableHeaderCell>
-            </tr>
-          </TableHeader>
-          <TableBody $theme={theme}>
-            {filteredUsers.map((user: User) => (
-              <TableRow key={user.id} $theme={theme}>
-                <TableCell $theme={theme}>{user.name.firstname} {user.name.lastname}</TableCell>
-                <TableCell $theme={theme}>{user.username}</TableCell>
-                <TableCell $theme={theme}>{user.email}</TableCell>
-                <TableCell $theme={theme}>{user.phone}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <>
+          <Table $theme={theme}>
+            <TableHeader $theme={theme}>
+              <tr>
+                <TableHeaderCell $theme={theme}>{dictionary.usersNameCol}</TableHeaderCell>
+                <TableHeaderCell $theme={theme}>{dictionary.usersUsernameCol}</TableHeaderCell>
+                <TableHeaderCell $theme={theme}>{dictionary.usersEmailCol}</TableHeaderCell>
+                <TableHeaderCell $theme={theme}>{dictionary.usersPhoneCol}</TableHeaderCell>
+              </tr>
+            </TableHeader>
+            <TableBody $theme={theme}>
+              {paginatedData.map((user: User) => (
+                <TableRow key={user.id} $theme={theme}>
+                  <TableCell $theme={theme}>{user.name.firstname} {user.name.lastname}</TableCell>
+                  <TableCell $theme={theme}>{user.username}</TableCell>
+                  <TableCell $theme={theme}>{user.email}</TableCell>
+                  <TableCell $theme={theme}>{user.phone}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Pagination
+            theme={theme}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            rangeStart={rangeStart}
+            rangeEnd={rangeEnd}
+            totalItems={totalItems}
+            canPrev={canPrev}
+            canNext={canNext}
+            onPrev={prevPage}
+            onNext={nextPage}
+            onPageChange={goToPage}
+          />
+        </>
       )}
     </UsersContainer>
   )

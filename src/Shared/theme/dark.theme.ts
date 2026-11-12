@@ -11,6 +11,7 @@ export const darkTheme: Theme = {
     text: '#f8fafc',
     border: '#334155',
     accent: '#fb923c',
+    onPrimary: '#FFFFFF',
   },
   spacing: sharedTokens.spacing,
   borderRadius: sharedTokens.borderRadius,

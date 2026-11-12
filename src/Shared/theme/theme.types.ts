@@ -6,6 +6,7 @@ export interface ThemeColors {
   text: string;
   border: string;
   accent: string;
+  onPrimary: string;
 }
 
 export interface ThemeSpacing {
