@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useLanguage } from '../../Dictionary/LanguageContext'
-import { LayoutDashboard, Package, Settings, Sun, Moon, Users, Languages, User, ShoppingBag } from 'lucide-react'
+import { LayoutDashboard, Package, Settings, Sun, Moon, Users, User, ShoppingBag } from 'lucide-react'
 import styled from 'styled-components'
 import type { Theme } from '../theme/theme.types'
 import { ROUTES } from '../../Routes/appRoutes'
@@ -108,6 +108,13 @@ const ControlButton = styled.button<{ $theme: Theme }>`
   }
 `
 
+const LanguageLabel = styled.span`
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+`
+
 const ProfileSection = styled.div<{ $theme: Theme }>`
   display: flex;
   align-items: center;
@@ -193,7 +200,7 @@ export const Sidebar: React.FC<{ theme: Theme }> = ({ theme }) => {
           {themeMode === 'light' ? <Moon /> : <Sun />}
         </ControlButton>
         <ControlButton $theme={theme} type="button" onClick={() => setLanguage(language === 'fa' ? 'en' : 'fa')} aria-label={language === 'fa' ? dictionary.languageEnglish : dictionary.languagePersian}>
-          <Languages />
+          <LanguageLabel>{language === 'fa' ? 'FA' : 'EN'}</LanguageLabel>
         </ControlButton>
       </ControlsGroup>
       <ProfileSection $theme={theme}>
