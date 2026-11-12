@@ -1,3 +1,4 @@
+import { Edit, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../Redux/hooks'
@@ -10,6 +11,7 @@ import { useTheme } from '../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../Dictionary/LanguageContext'
 import { usePagination } from '../../Shared/hooks/usePagination'
 import { Pagination } from '../../Shared/components/Pagination'
+import { PrimaryButton } from '../../Shared/components/PrimaryButton'
 
 const PAGE_SIZE = 5
 
@@ -38,25 +40,6 @@ const PageSubtitle = styled.p<{ $theme: Theme }>`
   font-size: 0.875rem;
   color: ${(props) => props.$theme.colors.secondary};
   margin: 0;
-`
-
-const ActionButton = styled.button<{ $theme: Theme }>`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #ffffff;
-  background-color: ${(props) => props.$theme.colors.primary};
-  border: none;
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    opacity: 0.9;
-  }
 `
 
 const SearchContainer = styled.div<{ $theme: Theme }>`
@@ -143,11 +126,54 @@ const StatusMessage = styled.p<{ $theme: Theme }>`
   margin: 0 0 1rem 0;
 `
 
+const ActionColumn = styled.td<{ $theme: Theme }>`
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: ${(props) => props.$theme.colors.text};
+  text-align: center;
+  white-space: nowrap;
+`
+
+const IconButton = styled.button<{ $theme: Theme }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: ${(props) => props.$theme.colors.text};
+  background-color: transparent;
+  border: none;
+  border-radius: ${(props) => props.$theme.borderRadius.md};
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0 ${(props) => props.$theme.spacing.xs};
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: ${(props) => props.$theme.colors.text};
+  }
+
+  &:hover {
+    background-color: ${(props) => props.$theme.colors.background};
+  }
+
+  &:hover svg {
+    stroke: ${(props) => props.$theme.colors.primary};
+  }
+`
+
+const DeleteButton = styled(IconButton)<{ $theme: Theme }>`
+  &:hover svg {
+    stroke: ${(props) => props.$theme.colors.accent};
+  }
+`
+
 const RetryButton = styled.button<{ $theme: Theme }>`
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #ffffff;
+  color: ${(props) => props.$theme.colors.onPrimary};
   background-color: ${(props) => props.$theme.colors.primary};
   border: none;
   border-radius: ${(props) => props.$theme.borderRadius.md};
@@ -173,9 +199,11 @@ export const UsersList: React.FC = () => {
 
   const filteredUsers = items.filter((user: User) => {
     const query = searchQuery.toLowerCase()
+    const firstname = (user.name?.firstname ?? '').toLowerCase()
+    const lastname = (user.name?.lastname ?? '').toLowerCase()
     return (
-      user.name.firstname.toLowerCase().includes(query) ||
-      user.name.lastname.toLowerCase().includes(query) ||
+      firstname.includes(query) ||
+      lastname.includes(query) ||
       user.username.toLowerCase().includes(query) ||
       user.email.toLowerCase().includes(query)
     )
@@ -215,9 +243,9 @@ export const UsersList: React.FC = () => {
           <PageTitle $theme={theme}>{dictionary.usersTitle}</PageTitle>
           <PageSubtitle $theme={theme}>{dictionary.usersSubtitle}</PageSubtitle>
         </div>
-        <ActionButton $theme={theme} type="button" onClick={() => navigate(ROUTES.CREATE_USER, { replace: true })}>
+        <PrimaryButton $theme={theme} type="button" onClick={() => navigate(ROUTES.CREATE_USER, { replace: true })}>
           + {dictionary.createUserTitle}
-        </ActionButton>
+        </PrimaryButton>
       </PageHeader>
 
       <SearchContainer $theme={theme}>
@@ -259,15 +287,24 @@ export const UsersList: React.FC = () => {
                 <TableHeaderCell $theme={theme}>{dictionary.usersUsernameCol}</TableHeaderCell>
                 <TableHeaderCell $theme={theme}>{dictionary.usersEmailCol}</TableHeaderCell>
                 <TableHeaderCell $theme={theme}>{dictionary.usersPhoneCol}</TableHeaderCell>
+                <TableHeaderCell $theme={theme}>{dictionary.usersActionsCol}</TableHeaderCell>
               </tr>
             </TableHeader>
             <TableBody $theme={theme}>
               {paginatedData.map((user: User) => (
                 <TableRow key={user.id} $theme={theme}>
-                  <TableCell $theme={theme}>{user.name.firstname} {user.name.lastname}</TableCell>
+                  <TableCell $theme={theme}>{user.name?.firstname ?? ''} {user.name?.lastname ?? ''}</TableCell>
                   <TableCell $theme={theme}>{user.username}</TableCell>
                   <TableCell $theme={theme}>{user.email}</TableCell>
                   <TableCell $theme={theme}>{user.phone}</TableCell>
+                  <ActionColumn $theme={theme}>
+                    <IconButton $theme={theme} type="button" onClick={() => navigate(ROUTES.USERS, { replace: true })}>
+                      <Edit />
+                    </IconButton>
+                    <DeleteButton $theme={theme} type="button">
+                      <Trash2 />
+                    </DeleteButton>
+                  </ActionColumn>
                 </TableRow>
               ))}
             </TableBody>

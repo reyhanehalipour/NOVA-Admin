@@ -81,14 +81,14 @@ const ErrorMessage = styled.div<{ $theme: Theme }>`
   background-color: ${(props) => props.$theme.colors.surface};
   border: 1px solid ${(props) => props.$theme.colors.border};
   border-radius: ${(props) => props.$theme.borderRadius.md};
-  color: ${(props) => props.$theme.colors.accent};
+  color: ${(props) => props.$theme.colors.error};
   font-size: 0.875rem;
   text-align: center;
 `
 
 const FieldError = styled.span<{ $theme: Theme }>`
   display: block;
-  color: ${(props) => props.$theme.colors.accent};
+  color: ${(props) => props.$theme.colors.error};
   font-size: 0.75rem;
   margin-top: 0.25rem;
 `
@@ -98,7 +98,7 @@ const LoginButton = styled.button<{ $theme: Theme }>`
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #ffffff;
+  color: ${(props) => props.$theme.colors.onPrimary};
   background-color: ${(props) => props.$theme.colors.primary};
   border: none;
   border-radius: ${(props) => props.$theme.borderRadius.md};

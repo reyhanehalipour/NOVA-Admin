@@ -1,23 +1,15 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../Dictionary/LanguageContext'
-import { useTheme } from '../../Shared/theme/ThemeProvider'
+import { Bell, LogOut, Menu as MenuIcon, User } from 'lucide-react'
 import styled from 'styled-components'
 import type { Theme } from '../theme/theme.types'
 import { ROUTES } from '../../Routes/appRoutes'
 
-const routeTitleMap: Record<string, string> = {
-  [ROUTES.LOGIN]: 'loginTitle',
-  [ROUTES.DASHBOARD]: 'dashboard',
-  [ROUTES.PRODUCTS]: 'productsTitle',
-  [ROUTES.CREATE_PRODUCT]: 'createProductTitle',
-  [ROUTES.USERS]: 'usersTitle',
-  [ROUTES.CREATE_USER]: 'createUserTitle',
-}
-
 const HeaderContainer = styled.header<{ $theme: Theme }>`
   position: sticky;
   top: 0;
-  left: 0;
+  left: 250px;
   right: 0;
   height: 72px;
   background-color: ${(props) => props.$theme.colors.background};
@@ -29,70 +21,109 @@ const HeaderContainer = styled.header<{ $theme: Theme }>`
   z-index: 50;
 `
 
-const Title = styled.h1<{ $theme: Theme }>`
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: ${(props) => props.$theme.colors.text};
-  margin: 0;
-`
-
-const Actions = styled.div<{ $theme: Theme }>`
+const LeftGroup = styled.div<{ $theme: Theme }>`
   display: flex;
   align-items: center;
   gap: ${(props) => props.$theme.spacing.sm};
 `
 
-const ThemeButton = styled.button<{ $theme: Theme }>`
+const RightGroup = styled.div<{ $theme: Theme }>`
   display: flex;
   align-items: center;
-  gap: ${(props) => props.$theme.spacing.xs};
-  padding: ${(props) => props.$theme.spacing.xs} ${(props) => props.$theme.spacing.sm};
+  gap: ${(props) => props.$theme.spacing.md};
+`
+
+const WelcomeText = styled.span<{ $theme: Theme }>`
   font-size: 0.875rem;
   font-weight: 500;
   color: ${(props) => props.$theme.colors.text};
-  background-color: ${(props) => props.$theme.colors.surface};
-  border: 1px solid ${(props) => props.$theme.colors.border};
+`
+
+const IconButton = styled.button<{ $theme: Theme }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: ${(props) => props.$theme.colors.text};
+  background-color: transparent;
+  border: none;
   border-radius: ${(props) => props.$theme.borderRadius.md};
   cursor: pointer;
   transition: background-color 0.2s;
 
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: ${(props) => props.$theme.colors.text};
+  }
+
   &:hover {
-    background-color: ${(props) => props.$theme.colors.background};
+    background-color: ${(props) => props.$theme.colors.surface};
   }
 `
 
-const LanguageButton = styled.button<{ $theme: Theme }>`
+const AvatarButton = styled.button<{ $theme: Theme }>`
   display: flex;
   align-items: center;
-  gap: ${(props) => props.$theme.spacing.xs};
-  padding: ${(props) => props.$theme.spacing.xs} ${(props) => props.$theme.spacing.sm};
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: ${(props) => props.$theme.colors.text};
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: ${(props) => props.$theme.colors.primary};
+  border: none;
+  border-radius: ${(props) => props.$theme.borderRadius.full};
+  cursor: pointer;
+  transition: opacity 0.2s;
+  position: relative;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke: ${(props) => props.$theme.colors.onPrimary};
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+`
+
+const ProfileWrapper = styled.div`
+  position: relative;
+`
+
+const Dropdown = styled.div<{ $theme: Theme }>`
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 180px;
   background-color: ${(props) => props.$theme.colors.surface};
   border: 1px solid ${(props) => props.$theme.colors.border};
   border-radius: ${(props) => props.$theme.borderRadius.md};
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${(props) => props.$theme.colors.background};
-  }
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: ${(props) => props.$theme.spacing.xs};
+  z-index: 200;
 `
 
-const LogoutButton = styled.button<{ $theme: Theme }>`
+const DropdownItem = styled.button<{ $theme: Theme }>`
   display: flex;
   align-items: center;
-  gap: ${(props) => props.$theme.spacing.xs};
-  padding: ${(props) => props.$theme.spacing.xs} ${(props) => props.$theme.spacing.sm};
+  gap: ${(props) => props.$theme.spacing.sm};
+  width: 100%;
+  padding: ${(props) => props.$theme.spacing.sm} ${(props) => props.$theme.spacing.md};
   font-size: 0.875rem;
   font-weight: 500;
   color: ${(props) => props.$theme.colors.text};
   background-color: transparent;
-  border: 1px solid ${(props) => props.$theme.colors.border};
+  border: none;
   border-radius: ${(props) => props.$theme.borderRadius.md};
   cursor: pointer;
   transition: background-color 0.2s;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: ${(props) => props.$theme.colors.text};
+  }
 
   &:hover {
     background-color: ${(props) => props.$theme.colors.background};
@@ -104,45 +135,62 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ theme }) => {
-  const { language, dictionary, setLanguage } = useLanguage()
-  const { themeMode, toggleTheme } = useTheme()
-  const location = useLocation()
+  const { dictionary } = useLanguage()
   const navigate = useNavigate()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const currentPath = location.pathname
-  const titleKey = routeTitleMap[currentPath] || 'dashboard'
-  const pageTitle = dictionary[titleKey as keyof typeof dictionary] || dictionary.dashboard
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false)
+      }
+    }
 
-  const handleThemeToggle = () => {
-    toggleTheme()
-  }
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
 
-  const handleLanguageChange = (nextLanguage: 'fa' | 'en') => {
-    setLanguage(nextLanguage)
-  }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isDropdownOpen])
 
   const handleLogout = () => {
     navigate(ROUTES.LOGIN, { replace: true })
+    setIsDropdownOpen(false)
+  }
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev)
   }
 
   return (
     <HeaderContainer $theme={theme}>
-      <Title $theme={theme}>{pageTitle}</Title>
-      <Actions $theme={theme}>
-        <ThemeButton $theme={theme} type="button" onClick={handleThemeToggle}>
-          {themeMode === 'light' ? dictionary.themeDark : dictionary.themeLight}
-        </ThemeButton>
-        <LanguageButton
-          $theme={theme}
-          type="button"
-          onClick={() => handleLanguageChange(language === 'fa' ? 'en' : 'fa')}
-        >
-          {language === 'fa' ? dictionary.languageEnglish : dictionary.languagePersian}
-        </LanguageButton>
-        <LogoutButton $theme={theme} type="button" onClick={handleLogout}>
-          {dictionary.logout}
-        </LogoutButton>
-      </Actions>
+      <LeftGroup $theme={theme}>
+        <IconButton $theme={theme} type="button" aria-label={dictionary.menuLabel}>
+          <MenuIcon />
+        </IconButton>
+        <IconButton $theme={theme} type="button" aria-label={dictionary.notificationsLabel}>
+          <Bell />
+        </IconButton>
+      </LeftGroup>
+      <RightGroup $theme={theme}>
+        <WelcomeText $theme={theme}>{dictionary.welcomeMessage}</WelcomeText>
+        <ProfileWrapper ref={dropdownRef}>
+          <AvatarButton $theme={theme} type="button" onClick={toggleDropdown} aria-label={dictionary.appName}>
+            <User />
+          </AvatarButton>
+          {isDropdownOpen && (
+            <Dropdown $theme={theme}>
+              <DropdownItem $theme={theme} type="button" onClick={handleLogout}>
+                <LogOut />
+                {dictionary.logout}
+              </DropdownItem>
+            </Dropdown>
+          )}
+        </ProfileWrapper>
+      </RightGroup>
     </HeaderContainer>
   )
 }

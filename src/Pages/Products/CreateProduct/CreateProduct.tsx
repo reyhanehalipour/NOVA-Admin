@@ -9,6 +9,7 @@ import type { Theme } from '../../../Shared/theme/theme.types'
 import { useTheme } from '../../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../../Dictionary/LanguageContext'
 import { ROUTES } from '../../../Routes/appRoutes'
+import { PrimaryButton } from '../../../Shared/components/PrimaryButton'
 
 interface CreateProductFormValues {
   title: string
@@ -102,14 +103,14 @@ const ErrorMessage = styled.div<{ $theme: Theme }>`
   background-color: ${(props) => props.$theme.colors.surface};
   border: 1px solid ${(props) => props.$theme.colors.border};
   border-radius: ${(props) => props.$theme.borderRadius.md};
-  color: ${(props) => props.$theme.colors.accent};
+  color: ${(props) => props.$theme.colors.error};
   font-size: 0.875rem;
   text-align: center;
 `
 
-const FieldError = styled.span`
+const FieldError = styled.span<{ $theme: Theme }>`
   display: block;
-  color: #ef4444;
+  color: ${(props) => props.$theme.colors.error};
   font-size: 0.75rem;
   margin-top: 0.25rem;
 `
@@ -118,27 +119,6 @@ const ButtonContainer = styled.div<{ $theme: Theme }>`
   display: flex;
   justify-content: space-between;
   margin-top: 1.5rem;
-`
-
-const SubmitButton = styled.button<{ $theme: Theme }>`
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #ffffff;
-  background-color: ${(props) => props.$theme.colors.primary};
-  border: none;
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover:not(:disabled) {
-    opacity: 0.9;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
 `
 
 const BackButton = styled.button<{ $theme: Theme }>`
@@ -231,7 +211,7 @@ export const CreateProductPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.title && formik.errors.title ? (
-            <FieldError>{formik.errors.title}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.title}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -248,7 +228,7 @@ export const CreateProductPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.description && formik.errors.description ? (
-            <FieldError>{formik.errors.description}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.description}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -265,7 +245,7 @@ export const CreateProductPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.price && formik.errors.price ? (
-            <FieldError>{formik.errors.price}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.price}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -282,7 +262,7 @@ export const CreateProductPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.category && formik.errors.category ? (
-            <FieldError>{formik.errors.category}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.category}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -299,7 +279,7 @@ export const CreateProductPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.image && formik.errors.image ? (
-            <FieldError>{formik.errors.image}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.image}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -307,9 +287,9 @@ export const CreateProductPage: React.FC = () => {
           <BackButton $theme={theme} type="button" onClick={() => navigate(ROUTES.PRODUCTS, { replace: true })}>
             {dictionary.createProductBack}
           </BackButton>
-          <SubmitButton $theme={theme} type="submit" disabled={isLoading || !formik.isValid}>
+          <PrimaryButton $theme={theme} type="submit" disabled={isLoading || !formik.isValid}>
             {isLoading ? dictionary.loading : dictionary.createProductSubmit}
-          </SubmitButton>
+          </PrimaryButton>
         </ButtonContainer>
       </FormCard>
     </CreateProductContainer>

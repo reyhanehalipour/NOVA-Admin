@@ -144,7 +144,7 @@ const RetryButton = styled.button<{ $theme: Theme }>`
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #ffffff;
+  color: ${(props) => props.$theme.colors.onPrimary};
   background-color: ${(props) => props.$theme.colors.primary};
   border: none;
   border-radius: ${(props) => props.$theme.borderRadius.md};

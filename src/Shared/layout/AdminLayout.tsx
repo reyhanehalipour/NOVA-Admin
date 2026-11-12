@@ -6,17 +6,22 @@ import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 
 const LayoutContainer = styled.div<{ $theme: Theme }>`
-  display: flex;
   min-width: 1280px;
   min-height: 100vh;
   background-color: ${(props) => props.$theme.colors.background};
   color: ${(props) => props.$theme.colors.text};
-  direction: rtl;
+`
+
+const MainArea = styled.div`
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
 `
 
 const MainWrapper = styled.main<{ $theme: Theme }>`
   flex: 1;
-  margin-right: 250px;
   padding: ${(props) => props.$theme.spacing.lg};
   min-height: calc(100vh - 72px);
 `
@@ -26,11 +31,13 @@ export const AdminLayout: React.FC = () => {
 
   return (
     <LayoutContainer $theme={theme}>
-      <Header theme={theme} />
       <Sidebar theme={theme} />
-      <MainWrapper $theme={theme}>
-        <Outlet />
-      </MainWrapper>
+      <MainArea>
+        <Header theme={theme} />
+        <MainWrapper $theme={theme}>
+          <Outlet />
+        </MainWrapper>
+      </MainArea>
     </LayoutContainer>
   )
 }

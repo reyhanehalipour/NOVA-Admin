@@ -10,6 +10,7 @@ import { useTheme } from '../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../Dictionary/LanguageContext'
 import { usePagination } from '../../Shared/hooks/usePagination'
 import { Pagination } from '../../Shared/components/Pagination'
+import { PrimaryButton } from '../../Shared/components/PrimaryButton'
 
 const PAGE_SIZE = 5
 
@@ -38,25 +39,6 @@ const PageSubtitle = styled.p<{ $theme: Theme }>`
   font-size: 0.875rem;
   color: ${(props) => props.$theme.colors.secondary};
   margin: 0;
-`
-
-const ActionButton = styled.button<{ $theme: Theme }>`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #ffffff;
-  background-color: ${(props) => props.$theme.colors.primary};
-  border: none;
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    opacity: 0.9;
-  }
 `
 
 const SearchContainer = styled.div<{ $theme: Theme }>`
@@ -122,12 +104,12 @@ const TableCell = styled.td<{ $theme: Theme }>`
   color: ${(props) => props.$theme.colors.text};
 `
 
-const ProductImage = styled.img`
+const ProductImage = styled.img<{ $theme: Theme }>`
   width: 48px;
   height: 48px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid ${(props) => props.$theme.colors.border};
 `
 
 const StatusBox = styled.div<{ $theme: Theme }>`
@@ -155,7 +137,7 @@ const RetryButton = styled.button<{ $theme: Theme }>`
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #ffffff;
+  color: ${(props) => props.$theme.colors.onPrimary};
   background-color: ${(props) => props.$theme.colors.primary};
   border: none;
   border-radius: ${(props) => props.$theme.borderRadius.md};
@@ -221,9 +203,9 @@ export const ProductsList: React.FC = () => {
           <PageTitle $theme={theme}>{dictionary.productsTitle}</PageTitle>
           <PageSubtitle $theme={theme}>{dictionary.productsSubtitle}</PageSubtitle>
         </div>
-        <ActionButton $theme={theme} type="button" onClick={() => navigate(ROUTES.CREATE_PRODUCT, { replace: true })}>
+        <PrimaryButton $theme={theme} type="button" onClick={() => navigate(ROUTES.CREATE_PRODUCT, { replace: true })}>
           + {dictionary.createProductTitle}
-        </ActionButton>
+        </PrimaryButton>
       </PageHeader>
 
       <SearchContainer $theme={theme}>
@@ -271,7 +253,7 @@ export const ProductsList: React.FC = () => {
               {paginatedData.map((product: Product) => (
                 <TableRow key={product.id} $theme={theme}>
                   <TableCell $theme={theme}>
-                    <ProductImage src={product.image} alt={product.title} />
+                    <ProductImage $theme={theme} src={product.image} alt={product.title} />
                   </TableCell>
                   <TableCell $theme={theme}>{product.title}</TableCell>
                   <TableCell $theme={theme}>{product.price.toLocaleString()}</TableCell>

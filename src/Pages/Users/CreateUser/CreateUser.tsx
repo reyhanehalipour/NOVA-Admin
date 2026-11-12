@@ -11,6 +11,7 @@ import { useTheme } from '../../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../../Dictionary/LanguageContext'
 import { ROUTES } from '../../../Routes/appRoutes'
 import type { RootState } from '../../../Redux/store'
+import { PrimaryButton } from '../../../Shared/components/PrimaryButton'
 
 interface CreateUserFormValues {
   firstname: string
@@ -89,14 +90,14 @@ const ErrorMessage = styled.div<{ $theme: Theme }>`
   background-color: ${(props) => props.$theme.colors.surface};
   border: 1px solid ${(props) => props.$theme.colors.border};
   border-radius: ${(props) => props.$theme.borderRadius.md};
-  color: ${(props) => props.$theme.colors.accent};
+  color: ${(props) => props.$theme.colors.error};
   font-size: 0.875rem;
   text-align: center;
 `
 
-const FieldError = styled.span`
+const FieldError = styled.span<{ $theme: Theme }>`
   display: block;
-  color: #ef4444;
+  color: ${(props) => props.$theme.colors.error};
   font-size: 0.75rem;
   margin-top: 0.25rem;
 `
@@ -105,27 +106,6 @@ const ButtonContainer = styled.div<{ $theme: Theme }>`
   display: flex;
   justify-content: space-between;
   margin-top: 1.5rem;
-`
-
-const SubmitButton = styled.button<{ $theme: Theme }>`
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #ffffff;
-  background-color: ${(props) => props.$theme.colors.primary};
-  border: none;
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover:not(:disabled) {
-    opacity: 0.9;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
 `
 
 const BackButton = styled.button<{ $theme: Theme }>`
@@ -230,7 +210,7 @@ export const CreateUserPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.firstname && formik.errors.firstname ? (
-            <FieldError>{formik.errors.firstname}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.firstname}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -247,7 +227,7 @@ export const CreateUserPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.lastname && formik.errors.lastname ? (
-            <FieldError>{formik.errors.lastname}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.lastname}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -264,7 +244,7 @@ export const CreateUserPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.username && formik.errors.username ? (
-            <FieldError>{formik.errors.username}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.username}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -281,7 +261,7 @@ export const CreateUserPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.email && formik.errors.email ? (
-            <FieldError>{formik.errors.email}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.email}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -298,7 +278,7 @@ export const CreateUserPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.password && formik.errors.password ? (
-            <FieldError>{formik.errors.password}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.password}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -315,7 +295,7 @@ export const CreateUserPage: React.FC = () => {
             disabled={isLoading}
           />
           {formik.touched.phone && formik.errors.phone ? (
-            <FieldError>{formik.errors.phone}</FieldError>
+            <FieldError $theme={theme}>{formik.errors.phone}</FieldError>
           ) : null}
         </FormGroup>
 
@@ -323,9 +303,9 @@ export const CreateUserPage: React.FC = () => {
           <BackButton $theme={theme} type="button" onClick={() => navigate(ROUTES.USERS, { replace: true })}>
             {dictionary.createUserBack}
           </BackButton>
-          <SubmitButton $theme={theme} type="submit" disabled={isLoading || !formik.isValid}>
+          <PrimaryButton $theme={theme} type="submit" disabled={isLoading || !formik.isValid}>
             {isLoading ? dictionary.loading : dictionary.createUserSubmit}
-          </SubmitButton>
+          </PrimaryButton>
         </ButtonContainer>
       </FormCard>
     </CreateUserContainer>

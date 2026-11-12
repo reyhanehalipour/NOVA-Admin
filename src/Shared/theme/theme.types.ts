@@ -1,11 +1,23 @@
 export interface ThemeColors {
   primary: string;
+  primaryHover: string;
+  navy: string;
+  activeBlue: string;
+  activeBlueHover: string;
+  activeBlueActive: string;
   secondary: string;
   background: string;
   surface: string;
   text: string;
   border: string;
   accent: string;
+  sidebarBackground: string;
+  sidebarText: string;
+  sidebarMuted: string;
+  sidebarHover: string;
+  sidebarBorder: string;
+  success: string;
+  error: string;
   onPrimary: string;
 }
 
