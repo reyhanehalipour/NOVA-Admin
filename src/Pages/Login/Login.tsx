@@ -9,6 +9,7 @@ import { useLanguage } from '../../Dictionary/LanguageContext'
 import { useTheme } from '../../Shared/theme/ThemeProvider'
 import type { Theme } from '../../Shared/theme/theme.types'
 import { ROUTES } from '../../Routes/appRoutes'
+import { toErrorMessage, resolveErrorMessage } from '../../Utils/api/errorMessage'
 
 interface LoginFormValues {
   username: string
@@ -139,23 +140,20 @@ export const LoginPage = () => {
       password: '',
     },
     validationSchema,
+    validateOnMount: true,
     onSubmit: async (values) => {
       setSubmitError(null)
       try {
         await dispatch(loginThunk(values)).unwrap()
         navigate(redirectTo, { replace: true })
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          setSubmitError(err.message)
-        } else {
-          setSubmitError(dictionary.loginError)
-        }
+        setSubmitError(toErrorMessage(err))
       }
     },
   })
 
   const isLoading = status === 'loading'
-  const authError = error || submitError
+  const errorMessage = resolveErrorMessage(error || submitError, dictionary)
 
   if (isAuthenticated) {
     navigate(redirectTo, { replace: true })
@@ -200,8 +198,8 @@ export const LoginPage = () => {
               <FieldError $theme={theme}>{formik.errors.password}</FieldError>
             ) : null}
           </FormGroup>
-          {authError ? (
-            <ErrorMessage $theme={theme}>{authError}</ErrorMessage>
+          {errorMessage ? (
+            <ErrorMessage $theme={theme}>{errorMessage}</ErrorMessage>
           ) : null}
           <LoginButton $theme={theme} type="submit" disabled={isLoading || !formik.isValid}>
             {isLoading ? dictionary.loading : dictionary.loginButton}

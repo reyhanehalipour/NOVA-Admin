@@ -48,6 +48,8 @@ export const faDictionary = {
   passwordMin: 'رمز عبور باید حداقل ۶ کاراکتر باشد',
   networkError: 'ارتباط با سرور برقرار نشد. لطفاً اتصال شبکه خود را بررسی کنید.',
   serverError: 'خطایی در سرور رخ داد. لطفاً دوباره تلاش کنید.',
+  loginInvalid: 'نام کاربری یا رمز عبور اشتباه است.',
+  forbiddenError: 'شما دسترسی لازم برای مشاهده این بخش را ندارید.',
   usersTitle: 'مدیریت کاربران',
   usersSubtitle: 'لیست کاربران سیستم',
   usersSearchPlaceholder: 'جستجو در نام، نام کاربری و ایمیل...',

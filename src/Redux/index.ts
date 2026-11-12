@@ -1,7 +1,7 @@
 export { store } from './store'
 export type { RootState, AppDispatch } from './store'
 export { useAppDispatch, useAppSelector } from './hooks'
-export { loginThunk, logoutThunk } from './auth/authSlice'
+export { loginThunk, logoutAction } from './auth/authSlice'
 export { fetchProductsThunk, createProductThunk } from './products/productsSlice'
 export { fetchUsersThunk, createUserThunk } from './users/usersSlice'
 export type { ProductsState } from './products/productsSlice'

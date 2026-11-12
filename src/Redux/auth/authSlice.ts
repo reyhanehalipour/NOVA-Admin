@@ -1,5 +1,7 @@
 import { createSlice, type PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 import { login } from '../../Utils/services/auth.service'
+import { toErrorMessage, LOGIN_INVALID } from '../../Utils/api/errorMessage'
 import { getToken, setToken, removeToken } from '../../Storage/tokenStorage'
 import type { LoginCredentials, AuthResponse } from '../../types/auth.types'
 
@@ -26,25 +28,10 @@ export const loginThunk = createAsyncThunk<AuthResponse, LoginCredentials, { rej
       const response = await login(credentials)
       return response
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message)
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        return rejectWithValue(LOGIN_INVALID)
       }
-      return rejectWithValue('خطای نامشخص در ورود به سیستم')
-    }
-  }
-)
-
-export const logoutThunk = createAsyncThunk<void, void, { rejectValue: string }>(
-  'auth/logout',
-  async (_, { rejectWithValue }) => {
-    try {
-      removeToken()
-      return
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message)
-      }
-      return rejectWithValue('خطا در خروج از سیستم')
+      return rejectWithValue(toErrorMessage(error))
     }
   }
 )
@@ -80,12 +67,6 @@ const authSlice = createSlice({
       .addCase(loginThunk.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.payload ?? 'خطا در ورود به سیستم'
-      })
-      .addCase(logoutThunk.fulfilled, (state) => {
-        state.token = null
-        state.isAuthenticated = false
-        state.status = 'idle'
-        state.error = null
       })
   },
 })

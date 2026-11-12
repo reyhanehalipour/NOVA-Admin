@@ -50,6 +50,8 @@ export const enDictionary: Dictionary = {
   passwordMin: 'Password must be at least 6 characters',
   networkError: 'Could not reach the server. Please check your network connection.',
   serverError: 'A server error occurred. Please try again.',
+  loginInvalid: 'Invalid username or password.',
+  forbiddenError: 'You do not have permission to access this section.',
   usersTitle: 'Users Management',
   usersSubtitle: 'System user list',
   usersSearchPlaceholder: 'Search by name, username and email...',

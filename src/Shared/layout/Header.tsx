@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../Dictionary/LanguageContext'
+import { useAppDispatch } from '../../Redux/hooks'
+import { logoutAction } from '../../Redux/auth/authSlice'
 import { Bell, LogOut, Menu as MenuIcon, User } from 'lucide-react'
 import styled from 'styled-components'
 import type { Theme } from '../theme/theme.types'
@@ -137,6 +139,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ theme }) => {
   const { dictionary } = useLanguage()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -157,6 +160,7 @@ export const Header: React.FC<HeaderProps> = ({ theme }) => {
   }, [isDropdownOpen])
 
   const handleLogout = () => {
+    dispatch(logoutAction())
     navigate(ROUTES.LOGIN, { replace: true })
     setIsDropdownOpen(false)
   }
