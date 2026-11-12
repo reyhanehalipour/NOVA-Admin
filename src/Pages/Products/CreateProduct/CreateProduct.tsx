@@ -1,15 +1,27 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks'
-import { createProductThunk } from '../../../Redux/products/productsSlice'
+import { createProductThunk, clearProductError } from '../../../Redux/products/productsSlice'
 import styled from 'styled-components'
 import type { Theme } from '../../../Shared/theme/theme.types'
 import { useTheme } from '../../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../../Dictionary/LanguageContext'
 import { ROUTES } from '../../../Routes/appRoutes'
 import { PrimaryButton } from '../../../Shared/components/PrimaryButton'
+import { FormFeedback } from '../../../Shared/components/FormFeedback'
+import {
+  FormCard,
+  FormGroup,
+  FormLabel,
+  FormInput,
+  FormTextarea,
+  FieldError,
+  ButtonContainer,
+  BackButton,
+} from '../../../Shared/components/form.styles'
+import { toErrorMessage, resolveErrorMessage } from '../../../Utils/api/errorMessage'
 
 interface CreateProductFormValues {
   title: string
@@ -47,96 +59,6 @@ const PageSubtitle = styled.p<{ $theme: Theme }>`
   margin: 0;
 `
 
-const FormCard = styled.form<{ $theme: Theme }>`
-  padding: 1.5rem;
-  background-color: ${(props) => props.$theme.colors.surface};
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.lg};
-`
-
-const FormGroup = styled.div<{ $theme: Theme }>`
-  margin-bottom: 1rem;
-`
-
-const FormLabel = styled.label<{ $theme: Theme }>`
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: ${(props) => props.$theme.colors.text};
-  margin-bottom: 0.5rem;
-`
-
-const FormInput = styled.input<{ $theme: Theme }>`
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  color: ${(props) => props.$theme.colors.text};
-  background-color: ${(props) => props.$theme.colors.background};
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-
-  &:focus {
-    border-color: ${(props) => props.$theme.colors.primary};
-    outline: none;
-  }
-`
-
-const FormTextarea = styled.textarea<{ $theme: Theme }>`
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  color: ${(props) => props.$theme.colors.text};
-  background-color: ${(props) => props.$theme.colors.background};
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  resize: vertical;
-
-  &:focus {
-    border-color: ${(props) => props.$theme.colors.primary};
-    outline: none;
-  }
-`
-
-const ErrorMessage = styled.div<{ $theme: Theme }>`
-  margin-bottom: 1rem;
-  padding: 0.5rem 0.75rem;
-  background-color: ${(props) => props.$theme.colors.surface};
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  color: ${(props) => props.$theme.colors.error};
-  font-size: 0.875rem;
-  text-align: center;
-`
-
-const FieldError = styled.span<{ $theme: Theme }>`
-  display: block;
-  color: ${(props) => props.$theme.colors.error};
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-`
-
-const ButtonContainer = styled.div<{ $theme: Theme }>`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1.5rem;
-`
-
-const BackButton = styled.button<{ $theme: Theme }>`
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: ${(props) => props.$theme.colors.text};
-  background-color: transparent;
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${(props) => props.$theme.colors.surface};
-  }
-`
-
 export const CreateProductPage: React.FC = () => {
   const dispatch = useAppDispatch()
   const { dictionary } = useLanguage()
@@ -145,13 +67,22 @@ export const CreateProductPage: React.FC = () => {
   const { createStatus, error } = useAppSelector((state) => state.products)
 
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null)
+
+  useEffect(() => {
+    dispatch(clearProductError())
+  }, [dispatch])
 
   const validationSchema = yup.object<CreateProductFormValues>().shape({
     title: yup.string().required(dictionary.requiredField),
     description: yup.string().required(dictionary.requiredField),
-    price: yup.number().required(dictionary.requiredField).positive('قیمت باید عدد مثبت باشد'),
+    price: yup
+      .number()
+      .typeError(dictionary.pricePositive)
+      .required(dictionary.requiredField)
+      .positive(dictionary.pricePositive),
     category: yup.string().required(dictionary.requiredField),
-    image: yup.string().required(dictionary.requiredField),
+    image: yup.string().required(dictionary.requiredField).url(dictionary.imageInvalid),
   })
 
   const formik = useFormik<CreateProductFormValues>({
@@ -163,23 +94,22 @@ export const CreateProductPage: React.FC = () => {
       image: '',
     },
     validationSchema,
+    validateOnMount: true,
     onSubmit: async (values) => {
       setSubmitError(null)
+      setSubmitSuccess(null)
       try {
-        await dispatch(createProductThunk(values)).unwrap()
-        navigate(ROUTES.PRODUCTS, { replace: true })
+        await dispatch(createProductThunk({ ...values, price: Number(values.price) })).unwrap()
+        setSubmitSuccess(dictionary.createProductSuccess)
+        formik.resetForm()
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          setSubmitError(err.message)
-        } else {
-          setSubmitError(dictionary.createProductError)
-        }
+        setSubmitError(toErrorMessage(err))
       }
     },
   })
 
   const isLoading = createStatus === 'loading'
-  const authError = error || submitError
+  const errorMessage = resolveErrorMessage(error || submitError, dictionary)
 
   return (
     <CreateProductContainer $theme={theme}>
@@ -194,9 +124,7 @@ export const CreateProductPage: React.FC = () => {
       </PageHeader>
 
       <FormCard $theme={theme} onSubmit={formik.handleSubmit}>
-        {authError ? (
-          <ErrorMessage $theme={theme}>{authError}</ErrorMessage>
-        ) : null}
+        <FormFeedback theme={theme} error={errorMessage} success={submitSuccess} />
 
         <FormGroup $theme={theme}>
           <FormLabel $theme={theme} htmlFor="title">{dictionary.createProductTitleLabel}</FormLabel>
@@ -239,6 +167,8 @@ export const CreateProductPage: React.FC = () => {
             id="price"
             name="price"
             type="number"
+            min="0"
+            step="0.01"
             value={formik.values.price}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

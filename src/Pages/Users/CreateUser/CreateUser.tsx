@@ -1,17 +1,27 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../../../Redux/hooks'
-import { createUserThunk } from '../../../Redux/users/usersSlice'
+import { createUserThunk, clearUserError } from '../../../Redux/users/usersSlice'
 import type { CreateUserInput } from '../../../types/user.types'
 import styled from 'styled-components'
 import type { Theme } from '../../../Shared/theme/theme.types'
 import { useTheme } from '../../../Shared/theme/ThemeProvider'
 import { useLanguage } from '../../../Dictionary/LanguageContext'
 import { ROUTES } from '../../../Routes/appRoutes'
-import type { RootState } from '../../../Redux/store'
 import { PrimaryButton } from '../../../Shared/components/PrimaryButton'
+import { FormFeedback } from '../../../Shared/components/FormFeedback'
+import {
+  FormCard,
+  FormGroup,
+  FormLabel,
+  FormInput,
+  FieldError,
+  ButtonContainer,
+  BackButton,
+} from '../../../Shared/components/form.styles'
+import { toErrorMessage, resolveErrorMessage } from '../../../Utils/api/errorMessage'
 
 interface CreateUserFormValues {
   firstname: string
@@ -50,95 +60,26 @@ const PageSubtitle = styled.p<{ $theme: Theme }>`
   margin: 0;
 `
 
-const FormCard = styled.form<{ $theme: Theme }>`
-  padding: 1.5rem;
-  background-color: ${(props) => props.$theme.colors.surface};
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.lg};
-`
-
-const FormGroup = styled.div<{ $theme: Theme }>`
-  margin-bottom: 1rem;
-`
-
-const FormLabel = styled.label<{ $theme: Theme }>`
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: ${(props) => props.$theme.colors.text};
-  margin-bottom: 0.5rem;
-`
-
-const FormInput = styled.input<{ $theme: Theme }>`
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  color: ${(props) => props.$theme.colors.text};
-  background-color: ${(props) => props.$theme.colors.background};
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-
-  &:focus {
-    border-color: ${(props) => props.$theme.colors.primary};
-    outline: none;
-  }
-`
-
-const ErrorMessage = styled.div<{ $theme: Theme }>`
-  margin-bottom: 1rem;
-  padding: 0.5rem 0.75rem;
-  background-color: ${(props) => props.$theme.colors.surface};
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  color: ${(props) => props.$theme.colors.error};
-  font-size: 0.875rem;
-  text-align: center;
-`
-
-const FieldError = styled.span<{ $theme: Theme }>`
-  display: block;
-  color: ${(props) => props.$theme.colors.error};
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-`
-
-const ButtonContainer = styled.div<{ $theme: Theme }>`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1.5rem;
-`
-
-const BackButton = styled.button<{ $theme: Theme }>`
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: ${(props) => props.$theme.colors.text};
-  background-color: transparent;
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: ${(props) => props.$theme.colors.surface};
-  }
-`
-
 export const CreateUserPage: React.FC = () => {
   const dispatch = useAppDispatch()
   const { dictionary } = useLanguage()
   const navigate = useNavigate()
   const { theme } = useTheme()
-  const { createStatus, error } = useAppSelector((state: RootState) => state.users)
+  const { createStatus, error } = useAppSelector((state) => state.users)
 
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null)
+
+  useEffect(() => {
+    dispatch(clearUserError())
+  }, [dispatch])
 
   const validationSchema = yup.object<CreateUserFormValues>().shape({
     firstname: yup.string().required(dictionary.requiredField),
     lastname: yup.string().required(dictionary.requiredField),
     username: yup.string().required(dictionary.requiredField),
-    email: yup.string().required(dictionary.requiredField).email('ایمیل معتبر وارد کنید'),
-    password: yup.string().required(dictionary.requiredField).min(6, 'رمز عبور باید حداقل ۶ کاراکتر باشد'),
+    email: yup.string().required(dictionary.requiredField).email(dictionary.emailInvalid),
+    password: yup.string().required(dictionary.requiredField).min(6, dictionary.passwordMin),
     phone: yup.string().required(dictionary.requiredField),
   })
 
@@ -152,33 +93,32 @@ export const CreateUserPage: React.FC = () => {
       phone: '',
     },
     validationSchema,
+    validateOnMount: true,
     onSubmit: async (values) => {
       setSubmitError(null)
+      setSubmitSuccess(null)
+      const payload: CreateUserInput = {
+        email: values.email,
+        username: values.username,
+        password: values.password,
+        name: {
+          firstname: values.firstname,
+          lastname: values.lastname,
+        },
+        phone: values.phone,
+      }
       try {
-        const payload: CreateUserInput = {
-          email: values.email,
-          username: values.username,
-          password: values.password,
-          name: {
-            firstname: values.firstname,
-            lastname: values.lastname,
-          },
-          phone: values.phone,
-        }
         await dispatch(createUserThunk(payload)).unwrap()
-        navigate(ROUTES.USERS, { replace: true })
+        setSubmitSuccess(dictionary.createUserSuccess)
+        formik.resetForm()
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          setSubmitError(err.message)
-        } else {
-          setSubmitError(dictionary.createUserError)
-        }
+        setSubmitError(toErrorMessage(err))
       }
     },
   })
 
   const isLoading = createStatus === 'loading'
-  const authError = error || submitError
+  const errorMessage = resolveErrorMessage(error || submitError, dictionary)
 
   return (
     <CreateUserContainer $theme={theme}>
@@ -193,9 +133,7 @@ export const CreateUserPage: React.FC = () => {
       </PageHeader>
 
       <FormCard $theme={theme} onSubmit={formik.handleSubmit}>
-        {authError ? (
-          <ErrorMessage $theme={theme}>{authError}</ErrorMessage>
-        ) : null}
+        <FormFeedback theme={theme} error={errorMessage} success={submitSuccess} />
 
         <FormGroup $theme={theme}>
           <FormLabel $theme={theme} htmlFor="firstname">{dictionary.createUserFirstNameLabel}</FormLabel>

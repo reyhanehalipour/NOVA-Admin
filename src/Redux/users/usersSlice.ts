@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { getUsers, createUser } from '../../Utils/services/user.service'
+import { toErrorMessage } from '../../Utils/api/errorMessage'
 import type { User, CreateUserInput } from '../../types/user.types'
 
 export interface UsersState {
@@ -23,10 +24,7 @@ export const fetchUsersThunk = createAsyncThunk<User[], void, { rejectValue: str
       const users = await getUsers()
       return users
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message)
-      }
-      return rejectWithValue('خطا در دریافت کاربران')
+      return rejectWithValue(toErrorMessage(error))
     }
   }
 )
@@ -36,12 +34,9 @@ export const createUserThunk = createAsyncThunk<User, CreateUserInput, { rejectV
   async (userData, { rejectWithValue }) => {
     try {
       const createdUser = await createUser(userData)
-      return createdUser
+      return { ...userData, id: createdUser.id }
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message)
-      }
-      return rejectWithValue('خطا در ایجاد کاربر')
+      return rejectWithValue(toErrorMessage(error))
     }
   }
 )
@@ -75,7 +70,9 @@ const usersSlice = createSlice({
       })
       .addCase(createUserThunk.fulfilled, (state, action: PayloadAction<User>) => {
         state.createStatus = 'succeeded'
-        state.items = [action.payload, ...state.items]
+        if (!state.items.some((user) => user.id === action.payload.id)) {
+          state.items = [action.payload, ...state.items]
+        }
         state.error = null
       })
       .addCase(createUserThunk.rejected, (state, action) => {

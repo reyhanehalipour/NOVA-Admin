@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { getProducts, createProduct } from '../../Utils/services/product.service'
+import { toErrorMessage } from '../../Utils/api/errorMessage'
 import type { Product, CreateProductInput } from '../../types/product.types'
 
 export interface ProductsState {
@@ -23,10 +24,7 @@ export const fetchProductsThunk = createAsyncThunk<Product[], void, { rejectValu
       const products = await getProducts()
       return products
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message)
-      }
-      return rejectWithValue('خطا در دریافت محصولات')
+      return rejectWithValue(toErrorMessage(error))
     }
   }
 )
@@ -38,10 +36,7 @@ export const createProductThunk = createAsyncThunk<Product, CreateProductInput, 
       const createdProduct = await createProduct(productData)
       return createdProduct
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message)
-      }
-      return rejectWithValue('خطا در ایجاد محصول')
+      return rejectWithValue(toErrorMessage(error))
     }
   }
 )
