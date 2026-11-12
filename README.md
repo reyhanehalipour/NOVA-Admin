@@ -1,282 +1,364 @@
 # NOVA Admin
 
-NOVA Admin یک داشبورد مدیریت (Admin Dashboard) با React و TypeScript است که برای چالش فنی استخدامی Frontend Developer در سطح Mid-Level توسعه یافته است. این پروژه شامل ورود کاربران، مدیریت محصولات و کاربران، داشبورد با آمار، پشتیبانی دو زبانه، و تغییر تم روشن و تاریک می‌باشد.
-username:mor_2314
+**NOVA Admin** یک داشبورد مدیریت (Admin Dashboard) تک‌صفحه‌ای (SPA) با **React**، **TypeScript** و **Vite** است که برای چالش فنی استخدامی Frontend Developer در سطح Mid-Level پیاده‌سازی شده است. این پروژه چرخه کامل یک پنل مدیریت را پوشش می‌دهد: ورود کاربر، داشبورد آماری، مدیریت محصولات، مدیریت کاربران، جست‌وجو، صفحه‌بندی، تم روشن/تاریک و رابط دوزبانه فارسی/انگلیسی با پشتیبانی RTL/LTR.
 
-password:83r5^_
+داده‌های برنامه از **FakeStoreAPI** دریافت می‌شوند؛ بنابراین این پروژه یک نمونه واقعی از اتصال به API واقعی، مدیریت وضعیت سمت سرور در Redux و رعایت جداسازی لایه‌ها (UI / State / Service / API) است.
 
+## اطلاعات ورود به پنل مدیریت (Demo Credentials)
 
+برای ورود به پنل از اطلاعات زیر استفاده کنید:
 
+**Username**
 
-قابلیت‌های اصلی پروژه عبارتند از:
+```text
+mor_2314
+```
 
-- ورود کاربران و مدیریت وضعیت Authentication
-- محافظت از صفحات مدیریتی با Protected Routes
-- داشبورد با نمایش تعداد کل محصولات و کاربران
-- مشاهده لیست محصولات و جست‌وجوی آن‌ها
-- ایجاد محصول جدید
-- مشاهده لیست کاربران و جست‌وجوی آن‌ها
-- ایجاد کاربر جدید
-- مدیریت فرم‌ها با Formik و Yup
-- مدیریت State با Redux Toolkit
-- پشتیبانی از زبان فارسی و انگلیسی
-- پشتیبانی از RTL (فارسی) و LTR (انگلیسی)
-- تغییر تم Light و Dark
-- ذخیره تنظیمات زبان و تم در localStorage
-- نمایش حالت‌های Loading، Error و Empty State در صفحات
+**Password**
+
+```text
+83r5^_
+```
+
+> این اعتبارنامه متعلق به دموی عمومی FakeStoreAPI است و صرفاً برای اجرای پروژه استفاده می‌شود.
+> آدرس API: `https://fakestoreapi.com`
 
 ---
 
-## امکانات پروژه (Features)
+## قابلیت‌ها
 
-| قابلیت | توضیح |
-|--------|-------|
-| ورود کاربران | صفحه ورود با اعتبارسنجی Formik/Yup و ارسال credentialها به API |
-| مدیریت Authentication | ذخیره توکن در localStorage، بررسی وضعیت لاگین، خروج از سیستم |
-| Protected Routes | صفحات مدیریتی فقط برای کاربران لاگین‌شده در دسترسند؛ در غیر این صورت به صفحه ورود هدایت می‌شوند |
-| داشبورد | نمایش تعداد محصولات و کاربران در کارت‌های آماری، لینک سریع به صفحات محصولات و کاربران |
-| مدیریت محصولات | نمایش لیست محصولات در جدول، جست‌وجوی محصولات بر اساس عنوان و دسته‌بندی، ایجاد محصول جدید |
-| مدیریت کاربران | نمایش لیست کاربران در جدول، جست‌وجوی کاربران بر اساس نام، نام کاربری و ایمیل، ایجاد کاربر جدید |
-| مدیریت فرم‌ها | اعتبارسنجی ورودی‌ها با Yup و کنترل فرم با Formik |
-| مدیریت State | Redux Toolkit با Sliceهای جداگانه برای auth، products و users |
-| پشتیبانی دو زبانه | زبان فارسی و انگلیسی با دکشنری جداگانه و تغییر فوری بدون reload |
-| پشتیبانی RTL/LTR | تغییر خودکار `dir` و `lang` در `<html>` بر اساس زبان انتخاب‌شده |
-| تم روشن و تاریک | تغییر تم Light و Dark با دکمه در هدر، persistence در localStorage |
-| ذخیره تنظیمات | زبان و تم پس از refresh صفحه حفظ می‌شوند |
-| وضعیت‌های UI | نمایش Loading، Error و Empty State در صفحات لیست و داشبورد |
-
----
-
-## تکنولوژی‌های استفاده‌شده (Tech Stack)
-
-نسخه‌های زیر مستقیماً از `package.json` استخراج شده‌اند.
-
-| تکنولوژی | نسخه | کاربرد در پروژه |
-|-----------|------|-----------------|
-| React | ^19.3.1 | کتابخانه huvud برای ساخت رابط کاربری |
-| Vite | ^8.3.6 | ابزار ساخت و سرور توسعه (dev server) |
-| TypeScript | ~7.0.2 | زبان برنامه‌نویسی با contrôle نوع (type safety) |
-| Redux Toolkit | ^2.14.0 | مدیریت حالت جهانی برنامه (global state) |
-| React Redux | ^9.3.1 | اتصال Redux به React |
-| Axios | ^1.21.0 | ارسال درخواست‌های HTTP به API |
-| Styled Components | ^6.6.0 | استایل‌دهی کامپوننت‌ها با پشتیبانی از تم |
-| Formik | ^2.4.9 | مدیریت فرم‌ها |
-| Yup | ^1.7.1 | اعتبارسنجی Schema برای فرم‌ها |
-| React Router DOM | ^7.18.5 | مسیرگذاری (Routing) در برنامه |
+| قابلیت | جزئیات پیاده‌سازی |
+|--------|-------------------|
+| احراز هویت | صفحه ورود با Formik/Yup، ارسال `POST /auth/login`، دریافت توکن و ذخیره در `localStorage` |
+| مدیریت نشست | بازیابی توکن در شروع برنامه، `logout` با پاک‌سازی توکن و هدایت به `/login` |
+| واکنش به 401 | درخواست‌های ناموفق (به‌جز `/auth/login`) با `notifyUnauthorized` باعث خروج خودکار و پاک‌سازی وضعیت می‌شوند |
+| Protected Routes | مسیرهای مدیریتی با `ProtectedRoute` محافظت شده‌اند و در صورت عدم احراز هویت به `/login` هدایت می‌شوند |
+| داشبورد | دریافت هم‌زمان محصولات و کاربران، نمایش تعداد کل در کارت‌های آماری و دسترسی سریع به دو بخش |
+| مدیریت محصولات | جدول محصولات (تصویر، عنوان، قیمت، دسته‌بندی)، جست‌وجو بر اساس عنوان/دسته‌بندی، صفحه‌بندی ۵ ردیفی، ایجاد محصول |
+| مدیریت کاربران | جدول کاربران (نام، نام کاربری، ایمیل، تلفن)، جست‌وجو در نام/نام خانوادگی/نام کاربری/ایمیل، صفحه‌بندی ۵ ردیفی، ایجاد کاربر |
+| جست‌وجو | فیلتر سمت کلاینت روی داده‌های بارگذاری‌شده، بدون درخواست مجدد به API |
+| صفحه‌بندی | هوک `usePagination` و کامپوننت `Pagination` با نمایش بازه `از–تا`، شماره صفحه و جهت فلش‌ها بر اساس زبان |
+| تم روشن و تاریک | کلید تغییر تم در سایدبار، ذخیره در `localStorage` کلید `nova_admin_theme` |
+| زبان فارسی/انگلیسی | کلید FA/EN در سایدبار، دیکشنری جداگانه (۹۸ کلید) و تغییر فوری بدون reload |
+| RTL/LTR | تنظیم `document.documentElement.lang` و `dir` بر اساس زبان انتخابی |
+| اعتبارسنجی فرم | Formik + Yup در ورود، ایجاد محصول و ایجاد کاربر؛ پیام خطا از دیکشنری |
+| وضعیت‌های UI | Loading، Error همراه با دکمه Retry، Empty و Empty-on-search در صفحات لیست و داشبورد |
 
 ---
 
-## پیش‌نیازها (Prerequisites)
+## تکنولوژی‌های استفاده‌شده
 
-برای اجرا و توسعه این پروژه نیاز به ابزارهای زیر دارید:
+نسخه‌ها مستقیماً از `package.json` استخراج شده‌اند.
 
-- Node.js
-- npm
-- Git
+| کتابخانه / ابزار | نسخه | نقش در پروژه |
+|------------------|-------|----------------|
+| React | `^19.3.1` | ساخت رابط کاربری و کامپوننت‌ها |
+| React DOM | `^19.3.1` | رندر درخت React در DOM |
+| TypeScript | `~7.0.2` | تایپ‌استاتیک در کل پروژه (بدون `any`) |
+| Vite | `^8.3.6` | سرور توسعه و باندل production |
+| `@vitejs/plugin-react` | `^6.3.0` | پشتیبانی JSX/Fast Refresh در Vite |
+| Redux Toolkit | `^2.14.0` | مدیریت state سراسری با Slice و `createAsyncThunk` |
+| React Redux | `^9.3.1` | اتصال Store به کامپوننت‌ها (`Provider`، هوک‌های تایپ‌شده) |
+| Axios | `^1.21.0` | ارسال درخواست HTTP به API |
+| React Router DOM | `^7.18.5` | مسیربندی، `ProtectedRoute` و ناوبری برنامه |
+| Styled Components | `^6.6.0` | استایل کامپوننت‌محور متصل به تم |
+| Formik | `^2.4.9` | مدیریت state فرم، اعتبارسنجی و ارسال |
+| Yup | `^1.7.1` | تعریف schema اعتبارسنجی فرم‌ها |
+| Lucide React | `^1.72.0` | آیکون‌های SVG (منو، کاربران، محصول و…) |
+| `@types/react-dom` | `^19.3.0` | تایپ‌های React DOM برای TypeScript |
+
+ابزارهای تست و Lint در پروژه تعریف نشده‌اند.
 
 ---
 
-## نصب و اجرای پروژه (Getting Started)
+## پیش‌نیازها
 
-دستورهای زیر را به ترتیب اجرا کنید:
+- **Node.js** نسخه ۲۰.۱۹ یا جدیدتر (الزام Vite 8)
+- **npm**
+- **Git**
+
+---
+
+## راه‌اندازی
 
 ```bash
-# ۱. کلون کردن ریپازیتوری
+# ۱. دریافت پروژه
 git clone https://github.com/reyhanehalipour/NOVA-Admin.git
 cd NOVA-Admin
 
 # ۲. نصب وابستگی‌ها
 npm install
 
-# ۳. آماده‌سازی متغیرهای محیطی
+# ۳. ساخت فایل متغیرهای محیطی
 cp .env.example .env
 
 # ۴. اجرای سرور توسعه
 npm run dev
-
-# ۵. ساخت نسخهproduction (در صورت نیاز)
-npm run build
 ```
 
-پس از اجرای `npm run dev`، برنامه در آدرس `http://localhost:5173` در دسترس خواهد بود (پورت پیش‌فرض Vite).
+پس از اجرا، برنامه به‌صورت پیش‌فرض در `http://localhost:5173` در دسترس است. مسیر `/` به `/dashboard` هدایت می‌شود و در اولین ورود به صفحه `/login` منتقل می‌شوید.
 
 ---
 
-## متغیرهای محیطی (Environment Variables)
+## متغیرهای محیطی
 
-فایل `.env.example` در ریشه پروژه حاوی متغیر زیر است:
+فایل `.env.example` در ریشه پروژه:
 
-```
+```dotenv
 VITE_API_BASE_URL=https://fakestoreapi.com
 ```
 
-- **VITE_API_BASE_URL**: آدرس پایه API که درخواست‌های Axios به آن ارسال می‌شوند. مقدار فعلی FakeStoreAPI است.
-- برای اجرا محلی، فایل `.env.example` را کپی کرده و به `.env` تغییر نام دهید.
-- فایل `.env` حاوی اطلاعات حساس نباید در Git کامیت شود.
-- متغیرهایی که با پیشوند `VITE_` شروع می‌شوند، در سمت کلاینت قابل مشاهده هستند و محلی نگهدارنده secret نیستند.
+| متغیر | توضیح |
+|-------|-------|
+| `VITE_API_BASE_URL` | آدرس پایه درخواست‌های Axios؛ مقدارش در `axiosInstance` خوانده می‌شود |
+
+نکات:
+
+- `.env` در `.gitignore` قرار دارد و نباید کامیت شود.
+- متغیرهای با پیشوند `VITE_` در سمت کلاینت قابل مشاهده‌اند و برای نگهداری secret مناسب نیستند.
+- در صورت خالی بودن مقدار، `baseURL` رشته خالی می‌شود و درخواست‌ها نسبی ارسال خواهند شد.
 
 ---
 
-## ساختار پروژه (Project Structure)
+## دستورات پروژه
 
-ساختار پوشه‌های `src` به شرح زیر است:
+دستورهای واقعی موجود در `package.json`:
+
+| دستور | عملکرد |
+|--------|--------|
+| `npm run dev` | اجرای سرور توسعه Vite |
+| `npm run build` | بررسی TypeScript با `tsc` و سپس باندل production با Vite |
+| `npm run preview` | پیش‌نمایش خروجی باندل‌شده |
+
+بررسی نوع‌ها به‌صورت مستقل:
+
+```bash
+npx tsc --noEmit
+```
+
+خروجی build در پوشه `dist/` تولید می‌شود که در Git نادیده گرفته شده است.
+
+---
+
+## ساختار پوشه‌ها
+
+ساختار واقعی پروژه:
 
 ```text
-src/
-├── App.tsx                      # ریشه برنامه، envolve کردن MainRoutes با BrowserRouter
-├── main.tsx                     # نقطه ورودی برنامه، رندر ریشه با Redux Provider و Theme/Language Providers
-├── style.css                    # استایل‌های پایه CSS
-├── assets/
-│   ├── Fonts/                   # فونت‌های پروژه (خالی)
-│   ├── Icons/                   # آیکون‌های پروژه (خالی)
-│   └── Images/                  # تصاویر پروژه (خالی)
-├── Components/                  # کامپوننت‌های قابل استفاده مجدد (خالی)
-├── Dictionary/
-│   ├── index.ts                 # exported:getDictionary برای دریافت دکشنری بر اساس زبان
-│   ├── LanguageContext.ts       # Context و hook useLanguage برای دسترسی به دکشنری
-│   ├── LanguageProvider.tsx     # provider زبان با persistence در localStorage و تنظیم dir/lang
-│   ├── dictionary.types.ts      # نوع Dictionary بر اساس faDictionary
-│   ├── fa.ts                    # دکشنری فارسی (۸۱ کلید)
-│   └── en.ts                    # دکشنری انگلیسی (۸۳ کلید)
-├── Modals/                      # ماژول‌های/modal (خالی)
-├── Pages/
-│   ├── Login/
-│   │   └── Login.tsx            # صفحه ورود با Formik/Yup و اعتبارسنجی
-│   ├── Dashboard/
-│   │   └── Dashboard.tsx        # داشبورد با کارت‌های آماری محصولات و کاربران
-│   ├── Products/
-│   │   ├── ProductsList.tsx     # لیست محصولات با جست‌وجو، جدول و وضعیت‌های UI
-│   │   └── CreateProduct/
-│   │       └── CreateProduct.tsx # فرم ایجاد محصول جدید با Formik/Yup
-│   └── Users/
-│       ├── UsersList.tsx        # لیست کاربران با جست‌وجو، جدول و وضعیت‌های UI
-│       └── CreateUser/
-│           └── CreateUser.tsx   # فرم ایجاد کاربر جدید با Formik/Yup
-├── Redux/
-│   ├── index.ts                 # Export store و प्रकारها
-│   ├── hooks.ts                 # hookهای تایپ شده useAppDispatch و useAppSelector
-│   ├── store.ts                 # ConfigureStore با سه reducer: auth, products, users
-│   ├── auth/
-│   │   └── authSlice.ts         # مدیریت وضعیت احراز هویت، 토کن، login/logout thunkها
-│   ├── products/
-│   │   └── productsSlice.ts     # مدیریت状態 محصولات، fetch/create thunkها
-│   └── users/
-│       └── usersSlice.ts        # مدیریت状態 کاربران، fetch/create thunkها
-├── Routes/
-│   ├── MainRoutes.tsx           # تعریف تمام مسیرها و نقشه‌همانی صفحه به کامپوننت
-│   ├── appRoutes.tsx            # ثابت‌های مسیر (ROUTES) و لیست appRoutes با ProtectedRoute
-│   └── ProtectedRoute.tsx       # محافظت از مسیرهای مدیریتی، بازneshانی به Login در صورت عدم احراز هویت
-├── Shared/
-│   ├── layout/
-│   │   ├── index.ts             # Export AdminLayout, Sidebar, Header
-│   │   ├── AdminLayout.tsx      # چیدمان کلی با Sidebar، هدر وOutlet
-│   │   ├── Header.tsx           # هدر با دکمه تم، زبان، خروج و عنوان صفحه جار břez مسیر
-│   │   └── Sidebar.tsx          // سایدبار با لینک‌های داشبورد، محصولات و کاربران (active state)
-│   └── theme/
-│       ├── index.ts             # Export قالب‌ها، توکن‌ها و GlobalStyle
-│       ├── theme.types.ts       # تعريف interfaceهای Theme، ThemeColors، ThemeSpacing و...
-│       ├── theme.tokens.ts      # توکن‌های مشترک (فاصله و حاشیه‌پای)
-│       ├── light.theme.ts       # قالب روشن (رنگ‌های پس‌زمینه، متن، border و...)
-│       ├── dark.theme.ts        # قالب تاریک (رنگ‌های پس‌زمینه، متن، border و...)
-│       ├── GlobalStyle.ts       # استایل‌های سراسری با createGlobalStyle
-│       └── ThemeProvider.tsx    # provider تم با persistence در localStorage
-├── Storage/
-│   └── tokenStorage.ts          # توابع getToken/setToken/removeToken با localStorage
-├── types/
-│   ├── Enums/
-│   │   └── Language.enum.ts     # تعریف زبان‌هایupported (fa, en)
-│   ├── auth.types.ts            # LoginCredentials و AuthResponse
-│   ├── product.types.ts         # Product، Rating و CreateProductInput
-│   └── user.types.ts            # Name، User و CreateUserInput
-├── Utils/
-│   ├── api/
-│   │   └── axiosInstance.ts     # نمونه مرکزی Axios با Base URL از متغیر محیطی
-│   └── services/
-│       ├── auth.service.ts      # سرویس احراز هویت (POST /auth/login)
-│       ├── product.service.ts   # سرویس محصولات (GET/POST /products)
-│       └── user.service.ts      # سرویس کاربران (GET/POST /users)
-└── Validations/                 # پوشه اعتبارسنجی (در حال حاضر خالی؛ اعتبارسنجی‌های در همان صفحات با Yup تعریف شده‌اند)
+NOVA-Admin/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── main.tsx                  # نقطه ورود؛ Providerهای Redux، Theme و Language
+│   ├── App.tsx                   # BrowserRouter و MainRoutes
+│   ├── style.css                 # استایل پایه و ریست حداقلی
+│   ├── Dictionary/
+│   │   ├── index.ts              # getDictionary برای انتخاب دیکشنری بر اساس زبان
+│   │   ├── LanguageContext.ts    # Context و هوک useLanguage
+│   │   ├── LanguageProvider.tsx  # state زبان، persistence و تنظیم lang/dir
+│   │   ├── dictionary.types.ts   # نوع Dictionary مشتق از faDictionary
+│   │   ├── fa.ts                 # دیکشنری فارسی (۹۸ کلید)
+│   │   └── en.ts                 # دیکشنری انگلیسی (۹۸ کلید)
+│   ├── Pages/
+│   │   ├── Login/Login.tsx
+│   │   ├── Dashboard/Dashboard.tsx
+│   │   ├── Products/
+│   │   │   ├── ProductsList.tsx
+│   │   │   └── CreateProduct/CreateProduct.tsx
+│   │   └── Users/
+│   │       ├── UsersList.tsx
+│   │       └── CreateUser/CreateUser.tsx
+│   ├── Redux/
+│   │   ├── index.ts              # بازخروجی store و typeها
+│   │   ├── hooks.ts              # useAppDispatch و useAppSelector تایپ‌شده
+│   │   ├── store.ts              # ساخت Store و ثبت هندلر 401
+│   │   ├── auth/authSlice.ts     # توکن، وضعیت لاگین و loginThunk
+│   │   ├── products/productsSlice.ts
+│   │   └── users/usersSlice.ts
+│   ├── Routes/
+│   │   ├── appRoutes.tsx         # ثابت ROUTES و فهرست مسیرها
+│   │   ├── MainRoutes.tsx        # تعریف Routeها و ProtectedRoute
+│   │   └── ProtectedRoute.tsx    # محافظت از مسیرهای مدیریتی
+│   ├── Shared/
+│   │   ├── components/
+│   │   │   ├── PrimaryButton.ts  # دکمه اصلی با توکن‌های رنگ فعال
+│   │   │   ├── FormFeedback.tsx  # نمایش پیام موفقیت/خطای فرم
+│   │   │   ├── form.styles.ts    # استایل مشترک فرم‌ها و placeholder
+│   │   │   └── Pagination.tsx    # کامپوننت صفحه‌بندی
+│   │   ├── hooks/
+│   │   │   └── usePagination.ts  # منطق صفحه‌بندی، بازه و ریست با جست‌وجو
+│   │   ├── layout/
+│   │   │   ├── index.ts
+│   │   │   ├── AdminLayout.tsx   # چیدمان Sidebar + Header + Outlet
+│   │   │   ├── Header.tsx        # آواتار، پیام خوش‌آمد و دکمه خروج
+│   │   │   └── Sidebar.tsx       # منو، کلید تم، کلید زبان و پروفایل
+│   │   └── theme/
+│   │       ├── index.ts
+│   │       ├── theme.types.ts    # اینترفیس Theme
+│   │       ├── theme.tokens.ts   # توکن‌های فاصله و شعاع مشترک
+│   │       ├── light.theme.ts    # پالت روشن
+│   │       ├── dark.theme.ts     # پالت تاریک
+│   │       ├── GlobalStyle.ts    # استایل سراسری createGlobalStyle
+│   │       └── ThemeProvider.tsx # state تم و persistence
+│   ├── Storage/
+│   │   └── tokenStorage.ts       # کلید nova_admin_token در localStorage
+│   ├── types/
+│   │   ├── auth.types.ts         # LoginCredentials و AuthResponse
+│   │   ├── product.types.ts      # Product، Rating و CreateProductInput
+│   │   ├── user.types.ts         # Name، User و CreateUserInput
+│   │   └── Enums/Language.enum.ts
+│   └── Utils/
+│       ├── api/
+│       │   ├── axiosInstance.ts  # نمونه Axios، interceptor و withAuthorization
+│       │   ├── authEvents.ts     # هندلر متمرکز 401 با single-flight
+│       │   └── errorMessage.ts   # نگاشت خطا به کد و پیام دیکشنری
+│       └── services/
+│           ├── auth.service.ts   # POST /auth/login
+│           ├── product.service.ts# GET/POST /products
+│           └── user.service.ts   # GET/POST /users
+├── .env.example
+├── index.html
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
 ---
 
-## یکپارچه‌سازی API (API Integration)
+## معماری و نحوه پیاده‌سازی
+
+### لایه‌بندی
+
+```text
+Pages (UI)
+  ↓ useAppDispatch / useAppSelector
+Redux Slices (state و thunk)
+  ↓
+Utils/services (فراخوانی endpoint)
+  ↓
+Utils/api/axiosInstance (تنظیمات مشترک و interceptor)
+  ↓
+FakeStoreAPI
+```
+
+کامپوننت‌ها هرگز مستقیماً با Axios کار نمی‌کنند؛ فراخوانی شبکه فقط در `Utils/services` انجام می‌شود و نتیجه از طریق Redux در اختیار UI قرار می‌گیرد.
+
+### Redux Toolkit
+
+`src/Redux/store.ts` سه reducer را در Store ثبت می‌کند: `auth`، `products` و `users`.
+
+| Slice | thunkها | وضعیت‌ها |
+|-------|---------|----------|
+| `auth` | `loginThunk` | `token`، `isAuthenticated`، `status`، `error` |
+| `products` | `fetchProductsThunk`، `createProductThunk` | `items`، `fetchStatus`، `createStatus`، `error` |
+| `users` | `fetchUsersThunk`، `createUserThunk` | `items`، `fetchStatus`، `createStatus`، `error` |
+
+- وضعیت‌های هر درخواست `idle | loading | succeeded | failed` هستند.
+- خطاها با `rejectWithValue` و از طریق `toErrorMessage` به کد خطای قابل ترجمه تبدیل می‌شوند (مثلاً `networkError`، `serverError`، `forbiddenError`، `loginInvalid`).
+- پس از ایجاد موفق محصول، آیتم در ابتدای `items` قرار می‌گیرد؛ در ایجاد کاربر، آیتم با ادغام پاسخ API و payload ساخته می‌شود و از تکراری شدن با بررسی `id` جلوگیری می‌شود.
+- هوک‌های تایپ‌شده `useAppDispatch` و `useAppSelector` در `src/Redux/hooks.ts` قرار دارند.
+
+### Axios Instance
+
+`src/Utils/api/axiosInstance.ts`:
+
+- `baseURL` از `import.meta.env.VITE_API_BASE_URL`
+- `timeout: 10000` میلی‌ثانیه
+- هدر پیش‌فرض `Content-Type: application/json`
+- `interceptor` پاسخ: در خطای ۴۰۱ (به‌جز مسیر `/auth/login`) `notifyUnauthorized()` صدا زده می‌شود تا نشست کاربر بسته شود.
+- `withAuthorization` یک helper برای افزودن هدر `Authorization: Bearer <token>` است.
+
+`src/Utils/api/authEvents.ts` از الگوی single-flight استفاده می‌کند: در پاسخ‌های ۴۰۱ هم‌زمان، فقط یک‌بار هندلر خروج اجرا می‌شود و هندلر در `store.ts` ثبت می‌گردد.
+
+### Routing و Protected Routes
+
+- مسیرها در `src/Routes/MainRoutes.tsx` تعریف شده‌اند.
+- `/login` خارج از محافظ عبور می‌کند.
+- مسیرهای `/dashboard`، `/products`، `/products/create`، `/users` و `/users/create` داخل `ProtectedRoute` و `AdminLayout` قرار دارند.
+- `ProtectedRoute` در صورت عدم احراز هویت، با `Navigate` و `state.from` کاربر را به `/login` می‌فرستد و پس از ورود، همان مسیر قبلی بازگردانده می‌شود.
+- مسیر `/` به `/dashboard` و مسیرهای ناشناخته به یک placeholder `Not Found` هدایت می‌شوند.
+
+### Theme Provider
+
+- تم در `src/Shared/theme/ThemeProvider.tsx` مدیریت می‌شود و مقدار انتخابی در `localStorage` با کلید `nova_admin_theme` ذخیره می‌گردد.
+- پالت‌های `light.theme.ts` و `dark.theme.ts` شامل رنگ‌های برند (Orange، Navy، Active Blue)، رنگ متن، border، success و error هستند.
+- توکن‌های مشترک فاصله و شعاع در `theme.tokens.ts` قرار دارند و در همه کامپوننت‌های styled استفاده می‌شوند.
+- `GlobalStyle` با `createGlobalStyle` ریست پایه، فونت سیستم و رفتار فرم‌ها را تعیین می‌کند.
+
+### Language Provider و Dictionary
+
+- `LanguageProvider` زبان پیش‌فرض را `fa` می‌گذارد و مقدار انتخابی را با کلید `nova_admin_language` در `localStorage` نگه می‌دارد.
+- با تغییر زبان، `document.documentElement.lang` و `dir` به‌روزرسانی می‌شوند (`rtl` برای فارسی و `ltr` برای انگلیسی).
+- `dictionary.types.ts` نوع `Dictionary` را از `faDictionary` می‌سازد؛ بنابراین افزودن کلید به `fa.ts` برای تایپ‌بودن `en.ts` الزامی است.
+- متن‌های رابط، پیام‌های اعتبارسنجی و پیام‌های خطا همگی از دیکشنری خوانده می‌شوند و زبان switcher در سایدبار مقدار `FA`/`EN` را از state واقعی نمایش می‌دهد.
+
+### Formik و Yup
+
+- state فرم، `touched`، `errors` و `handleSubmit` با Formik مدیریت می‌شود.
+- schema اعتبارسنجی با Yup تعریف می‌شود: الزامی‌بودن فیلدها، فرمت ایمیل، حداقل ۶ کاراکتر برای رمز، عدد مثبت برای قیمت و URL معتبر برای تصویر محصول.
+- `validateOnMount: true` باعث می‌شود دکمه ارسال تا معتبرشدن فرم غیرفعال بماند.
+- پیام موفقیت/خطای سرور با کامپوننت `FormFeedback` نمایش داده می‌شود و پس از موفقیت، فرم `resetForm` می‌شود.
+
+### صفحه‌بندی
+
+`usePagination` داده‌های فیلترشده را می‌پذیرد، `currentPage` را نگه می‌دارد و با تغییر عبارت جست‌وجو (`resetKey`) به صفحه اول برمی‌گردد. `Pagination` نیز بازه نمایش‌داده‌شده، شماره صفحات و جهت فلش‌ها را بر اساس زبان تعیین می‌کند.
+
+---
+
+## اتصال به API
 
 این پروژه از **FakeStoreAPI** به عنوان backend آزمایشی استفاده می‌کند.
 
-### Endpointها
+| عملیات | متد | Endpoint | فایل service |
+|---------|-----|----------|---------------|
+| ورود کاربر | `POST` | `/auth/login` | `auth.service.ts` |
+| دریافت محصولات | `GET` | `/products` | `product.service.ts` |
+| ایجاد محصول | `POST` | `/products` | `product.service.ts` |
+| دریافت کاربران | `GET` | `/users` | `user.service.ts` |
+| ایجاد کاربر | `POST` | `/users` | `user.service.ts` |
 
-| العملية | متد | Endpoint | توضیح |
-|---------|-----|----------|-------|
-| ورود | `POST` | `/auth/login` | احراز هویت کاربر و دریافت توکن |
-| دریافت محصولات | `GET` | `/products` | دریافت لیست محصولات |
-| ایجاد محصول | `POST` | `/products` | ایجاد یک محصول جدید |
-| دریافت کاربران | `GET` | `/users` | دریافت لیست کاربران |
-| ایجاد کاربر | `POST` | `/users` | ایجاد یک کاربر جدید |
+نکات اتصال:
 
-### Architektur اتصال به API
-
-- تمام درخواست‌ها از طریق `axiosInstance` در `src/Utils/api/axiosInstance.ts` ارسال می‌شوند.
-- `baseURL` از متغیر محیطی `VITE_API_BASE_URL` خوانده می‌شود.
-- هر源 (product, user, auth) دارای فایل service جداگانه در `src/Utils/services/` است که مسئول فراخوانی endpointهای مربوطه است.
-- پاسخ‌های API در لایه Redux (sliceها) مدیریت می‌شوند و کامپوننت‌ها فقط از `useAppSelector` استفاده می‌کنند.
-
-### محدودیت مهم FakeStoreAPI
-
-در عملیات `POST` (ایجاد محصول یا کاربر)، پاسخ موفقیت‌آمیز از سمت API به معنای ذخیره دائمی اطلاعات در سرور نیست. در این پروژه، آیتم ایجادشده پس از دریافت پاسخ موفق بلافاصله به لیست Redux اضافه می‌شود تا نتیجه در رابط کاربری نمایش داده شود؛ اما ممکن است پس از refresh صفحه از بین برود، چون FakeStoreAPI تغییرات را پایدار نمی‌کند.
+- همه درخواست‌ها از `axiosInstance` عبور می‌کنند.
+- پاسخ `POST /products` یک آبجکت کامل محصول و پاسخ `POST /users` تنها `{"id": <number>}` است؛ به همین دلیل در `createUserThunk` پاسخ API با payload فرم ادغام می‌شود تا ردیف جدید در جدول کامل باشد.
+- جست‌وجو و صفحه‌بندی سمت کلاینت انجام می‌شوند و برای هر تغییر، درخواست جدیدی به API ارسال نمی‌شود.
+- هدر `Authorization` در هیچ‌کدام از serviceها اعمال نمی‌شود؛ `withAuthorization` تعریف شده اما استفاده‌نشده است.
 
 ---
 
-## تصمیمات فنی و معماری (Technical Decisions)
+## احراز هویت و مدیریت نشست
 
-### ۱. Redux Toolkit
+1. کاربر در `/login` فرم را ارسال می‌کند و `loginThunk` درخواست `POST /auth/login` را می‌زند.
+2. پاسخ شامل `token` است؛ توکن در state و در `localStorage` با کلید `nova_admin_token` ذخیره می‌شود.
+3. در اجرای بعدی برنامه، `authSlice` مقدار اولیه را از `getToken()` می‌خواند و `isAuthenticated` را تعیین می‌کند.
+4. `ProtectedRoute` بر اساس `isAuthenticated` درباره دسترسی تصمیم می‌گیرد.
+5. با کلیک روی «خروج» در هدر، `logoutAction` توکن را حذف و state را پاک می‌کند و سپس به `/login` هدایت انجام می‌شود.
+6. دریافت ۴۰۱ از هر درخواست (به‌جز `/auth/login`) نیز از طریق `notifyUnauthorized` همان مسیر خروج را طی می‌کند.
 
-Redux Toolkit برای مدیریت حالت جهانی برنامه انتخاب شده است. Store شامل سه Slice است:
+محدودیت‌های امنیتی این بخش:
 
-- **auth**: مدیریت توکن، وضعیت لاگین، خطا و thunkهای ورود/خروج.
-- **products**: مدیریت لیست محصولات، وضعیت بارگذاری (fetchStatus)، وضعیت ایجاد (createStatus) و خطا.
-- **users**: مدیریت لیست کاربران، وضعیت بارگذاری، وضعیت ایجاد و خطا.
-
-هر Slice وضعیت‌های `idle`، `loading`، `succeeded` و `failed` را برای درخواست‌های asynchronous پشتیبانی می‌کند.
-
-### ۲. Axios
-
-از یک نمونه مرکزی Axios (`axiosInstance`) استفاده شده است تا `baseURL`، timeout و هدرهای مشترک در یک hely تعریف شوند. سرویس‌های API (auth.service، product.service، user.service) از این نمونه استفاده می‌کنند و لایه UI از طریق Redux به داده‌های آن‌ها دسترسی دارد، بنابراین جداسازی نگرانی‌ها (separation of concerns) حفظ می‌شود.
-
-### ۳. تفکیک Client State و Server State
-
-- **Client State**: زبان، تم، توکن احراز هویت و وضعیت UI (مانند فعال بودن دکمه در هنگام بارگذاری) در Redux و Contextها مدیریت می‌شوند.
-- **Server State**: لیست محصولات و کاربران که از API دریافت می‌شوند، در Redux sliceها نگهداری می‌شوند اما نه به عنوان cache_side server state، بلکه به عنوان client-side mirror از داده‌های سرور.
-
-### ۴. چرا TanStack Query استفاده نشده است؟
-
-با توجه به نیازمندی‌های چالش فنی استخدامی، استفاده از Redux Toolkit و Axios به عنوانStack مشخص شده بود. برای جلوگیری از اضافه کردن وابستگی غیرضروری، TanStack Query به پروژه اضافه نشده است. Redux Toolkit قابلیت مدیریت state مشترک را فراهم می‌کند، امالزوماً تمام ویژگی‌های تخصصی مدیریت server state (مانند caching خودکار، re-fetch در Hintergrund و deduplicate درخواست‌ها) که TanStack Query فراهم می‌کند، را ندارد.
-
-### ۵. TypeScript
-
-تمام کامپوننت‌ها، 토큰ها، reducerها و سرویس‌ها با TypeScript تایپ شده‌اند. از استفاده از `type any` جلوگیری شده است و type safety در کل برنامه حفظ شده است.
-
-### ۶. Styled Components
-
-از styled-components v6 برای استایل‌دهی استفاده شده است. تم روشن و تاریک در فایل‌های جداگانه (`light.theme.ts` و `dark.theme.ts`) تعریف شده و از طریق `ThemeProvider` به کل برنامه اعمال می‌شود. هر کامپوننتStyled از `$theme` برای دسترسی به رنگ‌ها، فاصله‌ها و حاشیه‌پا استفاده می‌کند.
-
-### ۷. Formik و Yup
-
-مدیریت فرم و اعتبارسنجی ورودی‌ها تفکیک شده‌اند: Formik مسئول کنترل状態 فرم و ارسال است و Yup مسئول تعریف schema اعتبارسنجی (مثلاً الزامی بودن فیلد، فرمت ایمیل، حداقل طول رمز عبور و عدد مثبت برای قیمت). اعتبارسنجی در صفحات ورود، ایجاد محصول و ایجاد کاربر اعمال می‌شود.
+- FakeStoreAPI توکن را اعتبارسنجی نمی‌کند و endpointهای آن عملاً محافظت‌شده نیستند؛ بنابراین این بخش جنبه نمایشی دارد.
+- refresh token وجود ندارد و با اتمام اعتبار توکن، نشست بدون تجدید از دست می‌رود.
+- توکن در `localStorage` نگهداری می‌شود و در برابر XSS مصون نیست؛ راهکار production استفاده از کوکی `HttpOnly` و بک‌اند امن است.
+- اعتبارنامه دمو به‌صورت عمومی در FakeStoreAPI تعریف شده است و نباید به عنوان اعتبارنامه واقعی تلقی شود.
 
 ---
 
-## محدودیت‌ها و نکات (Notes & Limitations)
+## محدودیت‌های شناخته‌شده
 
-- این پروژه یک Frontend Technical Challenge است و برای ارزیابی مهارت‌های توسعه‌دهنده در سطح Mid-Level آماده شده است.
-- FakeStoreAPI یک API آزمایشی است و رفتار آن لزوماً مشابه یک backend واقعی نیست.
-- اطلاعات ایجادشده از طریق POST ممکن است به شکل دائمی در سرور ذخیره نشوند (بیان شده در بخش یکپارچه‌سازی API).
-- احراز هویت در این پروژه نباید به عنوان یک راهکار امنیتی production در نظر گرفته شود. امنیت واقعی احراز هویت، مدیریت session و مجوزهای دسترسی نیاز به پیاده‌سازی backend امن دارد.
-- پوشه‌های `Components/`، `Modals/` و `Validations/` در حال حاضر خالی هستند (اعتبارسنجی‌ها مستقیماً در صفحات با Yup تعریف شده‌اند).
-- فونت و آیکون Custom در پوشه `assets/` قرار ندارند و از فونت‌های سیستم و emoji استفاده شده است.
+- **ماندگاری POST:** FakeStoreAPI داده‌های ایجادشده را ذخیره نمی‌کند؛ آیتم جدید تا زمان refresh در state باقی می‌ماند و پس از بارگذاری مجدد از بین می‌رود.
+- **پاسخ ناقص کاربر:** `POST /users` فقط `id` برمی‌گرداند؛ به همین دلیل ردیف جدید در UI با payload فرم تکمیل می‌شود، نه با پاسخ کامل سرور.
+- **دکمه‌های خروجی UI:** دکمه‌های منو و اعلان‌ها در هدر، و دکمه‌های Edit/Delete در جدول کاربران، فعلاً هندلر ندارند و جنبه ظاهری دارند.
+- **مسیر `/settings`:** آیتم Settings در سایدبار تعریف شده اما مسیری معادل آن در `MainRoutes` وجود ندارد و به placeholder `Not Found` می‌رسد.
+- **عدم ارسال توکن:** هدر `Authorization` در درخواست‌ها استفاده نمی‌شود و helper مربوطه بلااستفاده است.
+- **پروژه تست/Lint ندارد:** اسکریپت test یا linter در `package.json` تعریف نشده و اعتبارسنجی فقط با `tsc` و build انجام می‌شود.
+- **چیدمان دسکتاپ:** حداقل عرض ۱۲۸۰ پیکسل در نظر گرفته شده و طراحی واکنش‌گرا (Responsive) پیاده‌سازی نشده است.
+- **فونت و آیکون:** از فونت‌های سیستم و آیکون‌های Lucide و emoji استفاده شده و فایل فونت سفارشی در پروژه وجود ندارد.
+- **وابستگی به localStorage:** زبان و تم فقط در مرورگر فعلی ذخیره می‌شوند و بین دستگاه‌ها همگام نیستند.
+- **API آزمایشی:** رفتار FakeStoreAPI لزوماً مشابه یک backend واقعی نیست و برای آن سند OpenAPI یا قرارداد رسمی در پروژه تعریف نشده است.
 
 ---
 
-## مجوز (License)
+## مجوز
 
-این پروژه برای اهداف آموزشی و ارزیابی استخدامی توسعه یافته است.
+این پروژه برای اهداف آموزشی و ارزیابی استخدامی توسعه داده شده است و مجوز مشخصی برای استفاده تجاری ندارد.
