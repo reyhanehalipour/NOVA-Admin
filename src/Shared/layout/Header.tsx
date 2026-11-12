@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../Dictionary/LanguageContext'
 import { useAppDispatch } from '../../Redux/hooks'
@@ -65,7 +64,7 @@ const IconButton = styled.button<{ $theme: Theme }>`
   }
 `
 
-const AvatarButton = styled.button<{ $theme: Theme }>`
+const Avatar = styled.div<{ $theme: Theme }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,8 +73,6 @@ const AvatarButton = styled.button<{ $theme: Theme }>`
   background-color: ${(props) => props.$theme.colors.primary};
   border: none;
   border-radius: ${(props) => props.$theme.borderRadius.full};
-  cursor: pointer;
-  transition: opacity 0.2s;
   position: relative;
 
   svg {
@@ -83,52 +80,37 @@ const AvatarButton = styled.button<{ $theme: Theme }>`
     height: 18px;
     stroke: ${(props) => props.$theme.colors.onPrimary};
   }
-
-  &:hover {
-    opacity: 0.9;
-  }
 `
 
-const ProfileWrapper = styled.div`
-  position: relative;
-`
-
-const Dropdown = styled.div<{ $theme: Theme }>`
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  min-width: 180px;
-  background-color: ${(props) => props.$theme.colors.surface};
-  border: 1px solid ${(props) => props.$theme.colors.border};
-  border-radius: ${(props) => props.$theme.borderRadius.md};
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: ${(props) => props.$theme.spacing.xs};
-  z-index: 200;
-`
-
-const DropdownItem = styled.button<{ $theme: Theme }>`
+const UserSummary = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+`
+
+const LogoutButton = styled.button<{ $theme: Theme }>`
+  display: inline-flex;
   align-items: center;
-  gap: ${(props) => props.$theme.spacing.sm};
-  width: 100%;
-  padding: ${(props) => props.$theme.spacing.sm} ${(props) => props.$theme.spacing.md};
-  font-size: 0.875rem;
+  gap: ${(props) => props.$theme.spacing.xs};
+  padding: 0;
+  font-size: 0.75rem;
   font-weight: 500;
-  color: ${(props) => props.$theme.colors.text};
+  line-height: 1.2;
+  color: ${(props) => props.$theme.colors.secondary};
   background-color: transparent;
   border: none;
-  border-radius: ${(props) => props.$theme.borderRadius.md};
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: color 0.2s;
 
   svg {
-    width: 16px;
-    height: 16px;
-    stroke: ${(props) => props.$theme.colors.text};
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
   }
 
   &:hover {
-    background-color: ${(props) => props.$theme.colors.background};
+    color: ${(props) => props.$theme.colors.primary};
   }
 `
 
@@ -140,33 +122,10 @@ export const Header: React.FC<HeaderProps> = ({ theme }) => {
   const { dictionary } = useLanguage()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false)
-      }
-    }
-
-    if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isDropdownOpen])
 
   const handleLogout = () => {
     dispatch(logoutAction())
     navigate(ROUTES.LOGIN, { replace: true })
-    setIsDropdownOpen(false)
-  }
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev)
   }
 
   return (
@@ -180,20 +139,16 @@ export const Header: React.FC<HeaderProps> = ({ theme }) => {
         </IconButton>
       </LeftGroup>
       <RightGroup $theme={theme}>
-        <WelcomeText $theme={theme}>{dictionary.welcomeMessage}</WelcomeText>
-        <ProfileWrapper ref={dropdownRef}>
-          <AvatarButton $theme={theme} type="button" onClick={toggleDropdown} aria-label={dictionary.appName}>
-            <User />
-          </AvatarButton>
-          {isDropdownOpen && (
-            <Dropdown $theme={theme}>
-              <DropdownItem $theme={theme} type="button" onClick={handleLogout}>
-                <LogOut />
-                {dictionary.logout}
-              </DropdownItem>
-            </Dropdown>
-          )}
-        </ProfileWrapper>
+        <UserSummary>
+          <WelcomeText $theme={theme}>{dictionary.welcomeMessage}</WelcomeText>
+          <LogoutButton $theme={theme} type="button" onClick={handleLogout} aria-label={dictionary.logout}>
+            <LogOut />
+            {dictionary.logout}
+          </LogoutButton>
+        </UserSummary>
+        <Avatar $theme={theme}>
+          <User />
+        </Avatar>
       </RightGroup>
     </HeaderContainer>
   )
